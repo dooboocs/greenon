@@ -1,0 +1,28 @@
+token:
+  in: query
+  name: token
+  required: true
+  description: JWT Token
+  schema:
+    type: string
+
+deviceData:
+  in: query
+  name: device_data
+  required: true
+  description: Device Data
+  schema:
+    type: object
+    properties:
+      bio_air_roll:
+        type: number
+      air_quaility:
+        type: number
+      food_poisoning:
+        type: number
+      find_dust:
+        type: number
+      temperature:
+        type: number
+      humedity:
+        type: number

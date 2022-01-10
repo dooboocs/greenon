@@ -1,0 +1,7 @@
+components:
+  schemas:
+    User:
+      properties:
+        email:
+          type: string
+        
