@@ -1,20 +1,20 @@
 import dotenv from "dotenv";
 dotenv.config();
-
 import express from "express";
 import cors from "cors";
 import { createConnection } from "typeorm";
 import session from "express-session";
 import flash from "connect-flash";
-
 import passport from "passport";
 import passportConfig from "./passport";
-
 import indexRouter from "./routes/index";
 import userRouter from "./routes/user";
 import deviceRouter from "./routes/device";
 import bodyParser from "body-parser";
 import connectionOptions from "./ormconfig";
+
+import swaggerUI from "swagger-ui-express";
+import specs from "./specs";
 
 declare global {
   namespace Express {
@@ -31,7 +31,7 @@ createConnection(connectionOptions)
     const prod = process.env.NODE_ENV === "production";
 
     const app = express();
-    app.use(cors({ origin: "*", credentials: true }));
+    app.use(cors());
 
     app.use(passport.initialize());
     passportConfig();
@@ -58,6 +58,7 @@ createConnection(connectionOptions)
     app.use(passport.initialize());
     app.use(passport.session());
 
+    app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
     app.use("/", indexRouter);
     app.use("/users", userRouter);
     app.use("/devices", deviceRouter);

@@ -1,70 +1,55 @@
 import express from "express";
-import { getRepository } from "typeorm";
-import { User } from "../entity/User";
-import { verifyToken } from "../modules/jwt";
+import {
+  deleteUser,
+  getUser,
+  getUserInfo,
+  updateUser,
+} from "../controllers/userController";
 
+/**
+ * @swagger
+ * tags:
+ *  name: Users
+ *  description: User API
+ */
 const user = express.Router();
 
-interface Token {
-  id: string;
-  iat: number;
-}
-
-user.get("/", async (req, res) => {
-  const userRepo = getRepository(User);
-  const users = await userRepo.find();
-  res.status(200).send(users);
-});
-
-user.get("/detail", async (req, res) => {
-  const userRepo = getRepository(User);
-  const token = req.headers.authorization.split("Bearer ")[1];
-  verifyToken(token)
-    .then(async (decoded) => {
-      const user = await userRepo.findOne(decoded.id);
-      res.status(200).send(user);
-    })
-    .catch((err) => {
-      res.status(400).send(err.message);
-    });
-});
-
-user.put("/", async (req, res) => {
-  const userRepo = getRepository(User);
-  const token = req.headers.authorization.split("Bearer ")[1];
-  verifyToken(token)
-    .then(async (decoded) => {
-      const user = await userRepo.findOne(decoded.id);
-      try {
-        await userRepo.update(user.id, req.body);
-        return res.sendStatus(200);
-      } catch (err) {
-        return res.status(400).send("Update user error");
-      }
-    })
-    .catch((err) => {
-      return res.status(400).send(err);
-    });
-  if (!user) {
-    return res.status(400).send("Cannot find user");
-  }
-});
-
-user.delete("/", async (req, res) => {
-  const token = req.headers.authorization.split("Bearer ")[1];
-  verifyToken(token)
-    .then(async (decoded) => {
-      const user = await getRepository(User).findOne(decoded.id);
-      try {
-        await getRepository(User).delete(user.id);
-        return res.sendStatus(200);
-      } catch (err) {
-        return res.status(400).send({ error: err });
-      }
-    })
-    .catch((err) => {
-      return res.status(400).send(err);
-    });
-});
+/**
+ * @swagger
+ * paths:
+ *  /users:
+ *    get:
+ *      summary: 유저 목록 조회
+ *      tags: [Users]
+ *      responses:
+ *        "200":
+ *          description: Success
+ *    put:
+ *      summary: 유저 업데이트
+ *      tags: [Users]
+ *      responses:
+ *        "200":
+ *          description: Success
+ *    delete:
+ *      summary: 유저 삭제
+ *      tags: [Users]
+ *      responses:
+ *        "200":
+ *          description: Success
+ *
+ *  /users/detail:
+ *    get:
+ *      summary: 유저 정보 조회
+ *      tags: [Users]
+ *      responses:
+ *        "200":
+ *          description: Success
+ *
+ *
+ */
+user.get("/", getUser);
+user.get("/detail", getUserInfo);
+user.put("/", updateUser);
+user.delete("/", deleteUser);
 
 export default user;

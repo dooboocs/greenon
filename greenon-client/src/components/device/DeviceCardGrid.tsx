@@ -46,6 +46,19 @@ const DeviceCardGrid = ({ device }: { device: IDevice }) => {
     }
   }
 
+  function formatModeTime(mode_time: string) {
+    switch (mode_time) {
+      case "1":
+        return "1시간";
+      case "2":
+        return "2시간";
+      case "sequence":
+        return "연속";
+      case "manual":
+        return "수동";
+    }
+  }
+
   function handleOpenModal(e: any) {
     e.preventDefault();
     modal.handleOpen(e.target.name);
@@ -109,7 +122,7 @@ const DeviceCardGrid = ({ device }: { device: IDevice }) => {
       <GridItem>
         <label>시간</label>
         <Button name="controlTime" onClick={handleOpenModal}>
-          {device.mode_time === "seqeunce" ? "연속" : device.mode_time}
+          {formatModeTime(device.mode_time)}
         </Button>
       </GridItem>
     </Grid>

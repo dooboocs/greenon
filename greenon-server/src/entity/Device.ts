@@ -8,12 +8,54 @@ import {
   BeforeInsert,
   getRepository,
   AfterInsert,
-  AfterUpdate,
 } from "typeorm";
 import { User } from ".";
 import { DeviceData } from "./DeviceData";
-import timeout from "connect-timeout";
 import moment from "moment";
+
+/**
+ * @swagger
+ *  components:
+ *    schemas:
+ *      Device:
+ *        type: object
+ *        properties:
+ *          id:
+ *            type: string
+ *            format: uuid
+ *          name:
+ *            type: string
+ *          title:
+ *            type: string
+ *          device_type:
+ *            type: string
+ *          power:
+ *            type: boolean
+ *          mode:
+ *            type: number
+ *          mode_time:
+ *            type: string
+ *            enum: [seqeunce, 1h, 2h, manual]
+ *          motion_control:
+ *            type: boolean
+ *          space_sterilization:
+ *            type: string
+ *            enum: [seqeunce, 1h, 2h, manual]
+ *          pest_control:
+ *            type: string
+ *            enum: [seqeunce, 1h, 2h, manual]
+ *          water_level:
+ *            type: string
+ *          medicine:
+ *            type: string
+ *          user:
+ *            $ref: "#/components/schemas/User"
+ *          device_data:
+ *            $ref: "#/components/schemas/DeviceData"
+ *          updated_at:
+ *            type: date-time
+ *
+ */
 
 @Entity({ name: "Device" })
 export class Device {

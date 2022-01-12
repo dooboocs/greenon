@@ -1,3 +1,5 @@
+import { toJS } from "mobx";
+import { useObserver } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -5,16 +7,21 @@ import { ReactComponent as GBN1 } from "../../static/icons/icon-gnb-1.svg";
 import { ReactComponent as GBN2 } from "../../static/icons/icon-gnb-2.svg";
 import { ReactComponent as GBN3 } from "../../static/icons/icon-gnb-3.svg";
 import { ReactComponent as GBN4 } from "../../static/icons/icon-gnb-4.svg";
+import useStore from "../../stores";
 
 const BottomTab = () => {
-  return (
+  const { device } = useStore();
+  return useObserver(() => (
     <Container>
       <TabItem path="/" icon={<GBN1 />} />
-      <TabItem path="/devices" icon={<GBN2 />} />
+      <TabItem
+        path={`/devices/${toJS(device.devices)[0].id}`}
+        icon={<GBN2 />}
+      />
       <TabItem path="/manage" icon={<GBN3 />} />
       <TabItem path="/mypage" icon={<GBN4 />} />
     </Container>
-  );
+  ));
 };
 
 const TabItem = ({ icon, path }: { icon: React.ReactNode; path: string }) => {

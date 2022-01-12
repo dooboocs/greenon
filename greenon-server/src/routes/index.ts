@@ -1,55 +1,75 @@
-import express, { Request, Response, NextFunction } from "express";
+import express from "express";
 import passport from "passport";
+import { register } from "ts-node";
 import { getRepository } from "typeorm";
+import { login } from "../controllers/authController";
 import { User } from "../entity/User";
-import jwt from "jsonwebtoken";
 
+/**
+ * @swagger
+ * tags:
+ *  name: Auth
+ *  description: Auth API
+ */
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-  res.send("Greenon API Server");
-});
+/**
+ * @swagger
+ * paths:
+ *  /login:
+ *    post:
+ *      summary: 로그인
+ *      tags: [Auth]
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                email:
+ *                  type: string
+ *                password:
+ *                  type: string
+ *      responses:
+ *        "200":
+ *          description: Access Token 발급
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: "#/components/schemas/Token"
+ *        "401":
+ *          description: 아이디 혹은 비밀번호 틀림
+ *
+ *  /register:
+ *    post:
+ *      summary: 회원가입
+ *      tags: [Auth]
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                email:
+ *                  type: string
+ *                name:
+ *                  type: string
+ *                phone:
+ *                  type: string
+ *                password:
+ *                  type: string
+ *      responses:
+ *        "200":
+ *          description: Access Token 발급
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: "#/components/schemas/Token"
+ */
 
-router.post("/login", async (req, res) => {
-  const user = await getRepository(User).findOne({ email: req.body.email });
-
-  if (!user) {
-    return res.status(401).json({ error: "Cannot find user" });
-  }
-
-  const compareResult = await user.comparePassword(req.body.password);
-
-  if (!compareResult) {
-    return res.status(401).json({ error: "Incorrect password" });
-  }
-
-  const accessToken = await user.generateToken();
-
-  return res.status(200).json({ token: accessToken });
-});
-
-router.get("/login-fail", (req, res) => {
-  return res.status(401).send(req.flash());
-});
-
-router.post("/register", async (req, res, next) => {
-  try {
-    const exist = await getRepository(User).findOne({ email: req.body.email });
-    if (exist) {
-      return res.status(400).send("Already Exists");
-    }
-    const newUser = await getRepository(User).create({
-      email: req.body.email,
-      password: req.body.password,
-      name: req.body.name,
-      phone: req.body.phone,
-    });
-    const result = await getRepository(User).save(newUser);
-    const accessToken = await result.generateToken();
-    return res.status(200).send({ token: accessToken });
-  } catch (err) {
-    return next(err);
-  }
-});
+router.post("/login", login);
+router.post("/register", register);
 
 export default router;

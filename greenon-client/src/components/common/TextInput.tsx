@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { InputTemplate } from '.';
+import React from "react";
+import styled from "styled-components";
+import { InputTemplate } from ".";
 
 interface TextInputProps {
   type: string;
@@ -12,18 +12,21 @@ interface TextInputProps {
 }
 
 const InputBox = styled.div<{ background?: string }>`
-  border-radius: 10px;
-  border: ${({ background }) => (background ? 'none' : '1px solid #b1cad6')};
-  background: ${({ background }) => (background ? background : '#fff')};
+  border-radius: 6px;
+  border: ${({ background }) => (background ? "none" : "1px solid #b1cad6")};
+  background: ${({ background }) => (background ? background : "#fff")};
   display: flex;
   justify-content: space-between;
-  padding: 15px;
 `;
 
 const Input = styled.input`
   flex: 1;
   border: none;
   background: none;
+  padding: 15px;
+  height: 100%;
+  width: 100%;
+  font-size: 16px;
 
   &:focus-visible {
     outline: none;

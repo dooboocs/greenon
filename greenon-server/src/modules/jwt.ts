@@ -1,3 +1,4 @@
+import { Request } from "express";
 import jwt from "jsonwebtoken";
 
 interface Token {
@@ -5,7 +6,10 @@ interface Token {
   iat: number;
 }
 
-export const verifyToken = async (token: string) => {
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+export const verifyToken = async (req: Request) => {
+  const decoded = jwt.verify(
+    req.headers.authorization.split("Bearer")[1],
+    process.env.JWT_SECRET
+  );
   return decoded as Token;
 };

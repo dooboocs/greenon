@@ -22,7 +22,6 @@ const Box = styled.div<{ align: "row" | "column" }>`
     width: 100%;
     flex: ${(props) => (props.align === "row" ? 2.5 : 1)};
     display: flex;
-    gap: 10px;
   }
 `;
 

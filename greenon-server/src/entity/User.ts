@@ -9,6 +9,41 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Device } from ".";
 
+/**
+ * @swagger
+ *  components:
+ *    securitySchemas:
+ *      bearerAuth:
+ *        type: http
+ *        schema: bearer
+ *        bearerFormat: JWT
+ *      basicAuth:
+ *        type: http
+ *        schema: basic
+ *    schemas:
+ *      Token:
+ *        type: object
+ *        properties:
+ *          token:
+ *            type: string
+ *      User:
+ *        type: object
+ *        properties:
+ *          id:
+ *            type: string
+ *            format: uuid
+ *          name:
+ *            type: string
+ *          email:
+ *            type: string
+ *            format: email
+ *          password:
+ *             type: string
+ *             format: password
+ *          phone:
+ *            type: string
+ */
+
 @Entity({ name: "User" })
 export class User {
   @PrimaryGeneratedColumn("uuid")

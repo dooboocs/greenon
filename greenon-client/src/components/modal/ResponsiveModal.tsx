@@ -239,25 +239,25 @@ const ModalContent = ({ type }: { type: ModalType }) => {
         <>
           <Box
             style={{ cursor: "pointer" }}
-            onClick={() => handleUpdateDevice("mode_time", "1시간")}
+            onClick={() => handleUpdateDevice("mode_time", "1")}
           >
             1시간
           </Box>
           <Box
             style={{ cursor: "pointer" }}
-            onClick={() => handleUpdateDevice("mode_time", "2시간")}
+            onClick={() => handleUpdateDevice("mode_time", "2")}
           >
             2시간
           </Box>
           <Box
             style={{ cursor: "pointer" }}
-            onClick={() => handleUpdateDevice("mode_time", "연속")}
+            onClick={() => handleUpdateDevice("mode_time", "sequence")}
           >
             연속
           </Box>
           <Box
             style={{ cursor: "pointer" }}
-            onClick={() => handleUpdateDevice("mode_time", "수동")}
+            onClick={() => handleUpdateDevice("mode_time", "manual")}
           >
             수동
           </Box>
