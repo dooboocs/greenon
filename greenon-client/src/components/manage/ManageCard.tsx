@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import { ReactComponent as AirPuriIcon } from "../../static/icons/icon-airpuri.svg";
+import useStore from "../../stores";
 import { IDevice } from "../../stores/device";
 
 const ManageCardBox = styled(Link)`
@@ -44,6 +45,13 @@ const Button = styled.div<{ background: string; color: string }>`
 `;
 
 const ManageCard = ({ data }: { data: IDevice }) => {
+  const { device } = useStore();
+
+  const handleOnDelete = (e: any) => {
+    e.preventDefault();
+    device.deleteDevice(data.id);
+  };
+
   return (
     <ManageCardBox to={`/devices/${data.id}`}>
       <CardHeader>
@@ -56,8 +64,8 @@ const ManageCard = ({ data }: { data: IDevice }) => {
               textAlign: "right",
             }}
           >
-            <small>AT-1535B</small>
-            <small>공기청정제균기</small>
+            <small>{data.name}</small>
+            <small>{data.device_type}</small>
           </div>
           <AirPuriIcon />
         </InfoBox>
@@ -66,7 +74,7 @@ const ManageCard = ({ data }: { data: IDevice }) => {
         <Button background="#e5f2f8" color="#007cba">
           정보 수정
         </Button>
-        <Button background="#ffebf3" color="#ff0062">
+        <Button background="#ffebf3" color="#ff0062" onClick={handleOnDelete}>
           삭제
         </Button>
       </CardBottom>

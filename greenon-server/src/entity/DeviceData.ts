@@ -60,7 +60,7 @@ export class DeviceData {
   @Column()
   temperature: number;
 
-  @Column()
+  @Column({ type: "float" })
   humedity: number;
 
   @CreateDateColumn()

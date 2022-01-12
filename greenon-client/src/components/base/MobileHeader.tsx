@@ -1,10 +1,10 @@
-import React from 'react';
-
-import MobileLogo from '../../static/images/logo-header.png';
-import { ReactComponent as LocationIcon } from '../../static/icons/icon-pin.svg';
-import { ReactComponent as SunnyIcon } from '../../static/icons/icon-weather-sunny.svg';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import MobileLogo from "../../static/images/logo-header.png";
+import { ReactComponent as LocationIcon } from "../../static/icons/icon-pin.svg";
+import { ReactComponent as SunnyIcon } from "../../static/icons/icon-weather-sunny.svg";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import useStore from "../../stores";
 
 const MobileHeaderBox = styled.div`
   width: 100%;
@@ -17,7 +17,11 @@ const MobileHeaderBox = styled.div`
 const FlexBox = styled.div<{ align?: string }>`
   flex: 1;
   align-items: center;
-  text-align: ${({ align }) => (align ? align : 'left')};
+  text-align: ${({ align }) => (align ? align : "left")};
+
+  p {
+    font-size: 14px;
+  }
 `;
 
 const Space = styled.div`
@@ -26,20 +30,24 @@ const Space = styled.div`
   gap: 5px;
 `;
 
-const Location = () => {
+export const Location = () => {
+  const { etc } = useStore();
+
   return (
     <Space>
       <LocationIcon />
-      <p>서울 강남구</p>
+      <p>{etc.location}</p>
     </Space>
   );
 };
 
-const Weather = () => {
+export const Weather = () => {
+  const { etc } = useStore();
+
   return (
     <Space>
       <SunnyIcon />
-      <p>맑음</p>
+      <p>{etc.weather}</p>
     </Space>
   );
 };
@@ -53,8 +61,8 @@ const MobileHeader = () => {
         <img
           src={MobileLogo}
           alt="logo-greenon"
-          style={{ display: 'block', cursor: 'pointer' }}
-          onClick={() => navigate('/')}
+          style={{ display: "block", cursor: "pointer" }}
+          onClick={() => navigate("/")}
         />
       </FlexBox>
       <FlexBox align="center">

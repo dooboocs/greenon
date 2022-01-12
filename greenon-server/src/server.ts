@@ -7,9 +7,7 @@ import session from "express-session";
 import flash from "connect-flash";
 import passport from "passport";
 import passportConfig from "./passport";
-import indexRouter from "./routes/index";
-import userRouter from "./routes/user";
-import deviceRouter from "./routes/device";
+import { authRouter, userRouter, deviceRouter } from "./routes/index";
 import bodyParser from "body-parser";
 import connectionOptions from "./ormconfig";
 
@@ -59,11 +57,11 @@ createConnection(connectionOptions)
     app.use(passport.session());
 
     app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
-    app.use("/", indexRouter);
+    app.use("/auth", authRouter);
     app.use("/users", userRouter);
     app.use("/devices", deviceRouter);
 
-    var listener = app.listen(3000, () => {
+    app.listen(3000, () => {
       console.log(`Express server is running`);
     });
   })

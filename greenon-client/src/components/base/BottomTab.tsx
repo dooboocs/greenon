@@ -14,10 +14,7 @@ const BottomTab = () => {
   return useObserver(() => (
     <Container>
       <TabItem path="/" icon={<GBN1 />} />
-      <TabItem
-        path={`/devices/${toJS(device.devices)[0].id}`}
-        icon={<GBN2 />}
-      />
+      <TabItem path={`/devices/`} icon={<GBN2 />} />
       <TabItem path="/manage" icon={<GBN3 />} />
       <TabItem path="/mypage" icon={<GBN4 />} />
     </Container>

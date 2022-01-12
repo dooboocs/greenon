@@ -24,6 +24,7 @@ export interface IDeviceData {
   food_poisoning: number;
   humedity: number;
   temperature: number;
+  created_at: Date;
 }
 
 export interface IDeviceStore {

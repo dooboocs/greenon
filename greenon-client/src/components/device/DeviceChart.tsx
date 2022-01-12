@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,9 +8,10 @@ import {
   LineElement,
   Title,
   Tooltip,
-} from 'chart.js';
-import { Line } from 'react-chartjs-2';
-import faker from 'faker';
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+import moment from "moment";
+import { IDeviceData } from "../../stores/device";
 
 ChartJS.register(
   CategoryScale,
@@ -42,43 +43,66 @@ const Button = styled.button<{ active?: boolean }>`
   border: none;
   padding: 10px;
   border-radius: 5px;
-  background: ${({ active }) => (active ? '#007cba' : '#e5f2f8')};
-  color: ${({ active }) => (active ? '#fff' : '#007cba')};
+  background: ${({ active }) => (active ? "#007cba" : "#e5f2f8")};
+  color: ${({ active }) => (active ? "#fff" : "#007cba")};
 `;
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+const DeviceChart = ({ chartData }: { chartData: any }) => {
+  const [active, setActive] = useState("bio_air_roll");
 
-const DeviceChart = () => {
-  const [active, setActive] = useState(0);
+  const handleClick = (e: any) => {
+    setActive(e.target.name);
+  };
+
+  let sortedData = chartData.sort(
+    (a: IDeviceData, b: IDeviceData) =>
+      moment(a.created_at) > moment(b.created_at)
+  );
 
   const data: any = {
-    labels,
+    labels: sortedData.map((data: IDeviceData) =>
+      moment(data.created_at).format("HH:mm")
+    ),
     datasets: [
       {
-        label: 'Dataset 1',
-        data: labels.map(() =>
-          faker.datatype.number({ min: -1000, max: 1000 })
-        ),
-        borderColor: '#007ba8',
-        backgroundColor: '#fff',
+        data: sortedData.map((data: any) => data[active]),
+        borderColor: "#007ba8",
+        backgroundColor: "#fff",
       },
     ],
+    fill: false,
   };
 
   return (
     <React.Fragment>
       <h5>누적데이터</h5>
       <ButtonGroup>
-        <Button active={active === 0} onClick={() => setActive(0)}>
+        <Button
+          name="bio_air_roll"
+          active={active === "bio_air_roll"}
+          onClick={handleClick}
+        >
           바이오에어로졸지수
         </Button>
-        <Button active={active === 1} onClick={() => setActive(1)}>
+        <Button
+          name="air_quailty"
+          active={active === "air_quailty"}
+          onClick={handleClick}
+        >
           공기질지수
         </Button>
-        <Button active={active === 2} onClick={() => setActive(2)}>
+        <Button
+          name="food_poisoning"
+          active={active === "food_poisoning"}
+          onClick={handleClick}
+        >
           식중독지수
         </Button>
-        <Button active={active === 3} onClick={() => setActive(3)}>
+        <Button
+          name="find_dust"
+          active={active === "find_dust"}
+          onClick={handleClick}
+        >
           미세먼지지수
         </Button>
       </ButtonGroup>

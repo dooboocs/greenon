@@ -1,29 +1,18 @@
 import passport from "passport";
-import { Strategy as LocalStrategy } from "passport-local";
+import KakaoStrategy from "passport-kakao";
 import { getRepository } from "typeorm";
 import { User } from "./entity/User";
 
 const passportConfig = () => {
   passport.use(
-    new LocalStrategy(
+    new KakaoStrategy(
       {
-        usernameField: "email",
-        passwordField: "password",
+        callbackURL: "/auth/kakao/callback",
+        clientID: "e386b5f670b8ac0c48c7e7ed198f56bd",
       },
-      async function (email, password, done) {
-        const user = await getRepository(User).findOne({ email });
-
-        if (!user) {
-          return done(null, false, { message: "Cannot find user" });
-        }
-
-        const campareResult = await user.comparePassword(password);
-
-        if (!campareResult) {
-          return done(null, false, { message: "Incorrect password" });
-        }
-
-        return done(null, user);
+      async (accessToken, refreshToken, profile, done) => {
+        console.log(profile);
+        done(null);
       }
     )
   );

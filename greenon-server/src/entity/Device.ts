@@ -117,7 +117,7 @@ export class Device {
   @AfterInsert()
   async syncDeviceData(): Promise<void> {
     this.addDeviceData();
-    setInterval(this.addDeviceData.bind(this), 60000);
+    setInterval(this.addDeviceData.bind(this), 600000);
   }
 
   async addDeviceData() {

@@ -80,7 +80,10 @@ const Login = () => {
               <Link to="/find_email">이메일·비밀번호 찾기</Link>
               <Link to="/register">회원가입</Link>
             </HorizontalBox>
-            <Button style={{ background: "#ffe812", color: "#000" }}>
+            <Button
+              style={{ background: "#ffe812", color: "#000" }}
+              onClick={apis.kakaoLogin}
+            >
               카카오톡으로 시작하기
             </Button>
             <Button style={{ background: "#000", color: "#fff" }}>

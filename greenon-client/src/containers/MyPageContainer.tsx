@@ -1,16 +1,17 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { PageTemplate } from '../components/base';
-import { Division } from '../components/common';
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { PageTemplate } from "../components/base";
+import { Division } from "../components/common";
 
-import { ReactComponent as ProfileIcon } from '../static/icons/icon-modifyprofile.svg';
-import { ReactComponent as Icon1 } from '../static/icons/icon-mypage-1.svg';
-import { ReactComponent as Icon2 } from '../static/icons/icon-mypage-2.svg';
-import { ReactComponent as Icon3 } from '../static/icons/icon-mypage-3.svg';
-import { ReactComponent as Icon4 } from '../static/icons/icon-mypage-4.svg';
-import { ReactComponent as Icon5 } from '../static/icons/icon-mypage-5.svg';
-import { ReactComponent as Icon6 } from '../static/icons/icon-mypage-6.svg';
+import { ReactComponent as ProfileIcon } from "../static/icons/icon-modifyprofile.svg";
+import { ReactComponent as Icon1 } from "../static/icons/icon-mypage-1.svg";
+import { ReactComponent as Icon2 } from "../static/icons/icon-mypage-2.svg";
+import { ReactComponent as Icon3 } from "../static/icons/icon-mypage-3.svg";
+import { ReactComponent as Icon4 } from "../static/icons/icon-mypage-4.svg";
+import { ReactComponent as Icon5 } from "../static/icons/icon-mypage-5.svg";
+import { ReactComponent as Icon6 } from "../static/icons/icon-mypage-6.svg";
+import useStore from "../stores";
 
 const Container = styled.div`
   display: flex;
@@ -89,6 +90,7 @@ const Container = styled.div`
 
 const MyPageContainer = () => {
   const navigate = useNavigate();
+  const { user } = useStore();
 
   return (
     <PageTemplate>
@@ -96,11 +98,11 @@ const MyPageContainer = () => {
         <div className="info-wrapper">
           <div className="info-left">
             <div className="profile-img" />
-            <p style={{ fontSize: 16 }}>emailgoes@naver.com</p>
+            <p style={{ fontSize: 16 }}>{user.email}</p>
           </div>
           <ProfileIcon
-            onClick={() => navigate('/profile_edit')}
-            style={{ cursor: 'pointer' }}
+            onClick={() => navigate("/profile_edit")}
+            style={{ cursor: "pointer" }}
           />
         </div>
         <Division />

@@ -5,19 +5,16 @@ import { IDevice } from "../../stores/device";
 
 const ManageGridBox = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(335px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(335px, 0.25fr));
   grid-gap: 20px;
-
-  @media (min-width: 768px) {
-  }
 `;
 
 const ManageGrid = ({ data }: { data: IDevice[] }) => {
   return (
     <ManageGridBox>
       {data &&
-        data.map((dat: any, index: any) => (
-          <ManageCard data={dat} key={index} />
+        data.map((device: IDevice) => (
+          <ManageCard data={device} key={device.id} />
         ))}
     </ManageGridBox>
   );

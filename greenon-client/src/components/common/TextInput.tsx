@@ -17,6 +17,8 @@ const InputBox = styled.div<{ background?: string }>`
   background: ${({ background }) => (background ? background : "#fff")};
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  padding-right: 10px;
 `;
 
 const Input = styled.input`

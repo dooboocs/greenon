@@ -75,12 +75,12 @@ const DeviceContainer = () => {
                 name={targetDevice.name}
                 type={targetDevice.device_type}
               />
-              <DeviceIndex />
+              <DeviceIndex data={targetDevice.device_data[0]} />
               <Division />
               <DeviceStatus data={targetDevice} />
             </Left>
             <Right>
-              <DeviceChart />
+              <DeviceChart chartData={targetDevice.device_data} />
             </Right>
           </Box>
         </Container>

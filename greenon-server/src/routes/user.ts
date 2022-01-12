@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  changePassword,
   deleteUser,
   getUser,
   getUserInfo,
@@ -45,11 +46,19 @@ const user = express.Router();
  *        "200":
  *          description: Success
  *
+ *  /users/change_password:
+ *    post:
+ *      summary: 유저 비밀번호 변경
+ *      tags: [Users]
+ *      responses:
+ *        "200":
+ *          description: Success
  *
  */
 user.get("/", getUser);
-user.get("/detail", getUserInfo);
 user.put("/", updateUser);
 user.delete("/", deleteUser);
+user.get("/detail", getUserInfo);
+user.post("/change_password", changePassword);
 
 export default user;

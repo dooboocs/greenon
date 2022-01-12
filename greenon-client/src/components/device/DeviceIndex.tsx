@@ -1,10 +1,10 @@
-import React from 'react';
-import styled from 'styled-components';
-import { CircularProgress } from '.';
-
-import { ReactComponent as Icon1 } from '../../static/icons/icon-1.svg';
-import { ReactComponent as Icon2 } from '../../static/icons/icon-2.svg';
-import { ReactComponent as Icon3 } from '../../static/icons/icon-3.svg';
+import React from "react";
+import styled from "styled-components";
+import { CircularProgress } from ".";
+import { ReactComponent as Icon1 } from "../../static/icons/icon-1.svg";
+import { ReactComponent as Icon2 } from "../../static/icons/icon-2.svg";
+import { ReactComponent as Icon3 } from "../../static/icons/icon-3.svg";
+import { IDeviceData } from "../../stores/device";
 
 const Box = styled.div`
   display: flex;
@@ -31,25 +31,25 @@ const InlineCol = styled.div`
   flex-direction: column;
 `;
 
-const DeviceIndex = () => {
+const DeviceIndex = ({ data }: { data: IDeviceData }) => {
   return (
     <Box>
       <Row>
         <CircularProgress
           title="바이오에어로줄지수"
-          progress={50}
+          progress={data.bio_air_roll}
           color="#007cba"
           text="좋음"
         />
         <CircularProgress
           title="공기질지수"
-          progress={50}
+          progress={data.air_quailty}
           color="#00c4ff"
           text="나쁨"
         />
         <CircularProgress
           title="식중독 지수"
-          progress={50}
+          progress={data.food_poisoning}
           color="#00baba"
           text="낮음"
         />
@@ -58,22 +58,22 @@ const DeviceIndex = () => {
         <InlineRow>
           <Icon1 />
           <InlineCol>
-            <label style={{ color: '#8b8b8b' }}>미세먼지</label>
-            <p style={{ fontSize: 14 }}>2.5PM</p>
+            <label style={{ color: "#8b8b8b" }}>미세먼지</label>
+            <p style={{ fontSize: 14 }}>{data.find_dust}PM</p>
           </InlineCol>
         </InlineRow>
         <InlineRow>
           <Icon2 />
           <InlineCol>
-            <label style={{ color: '#8b8b8b' }}>온도</label>
-            <p style={{ fontSize: 14 }}>20°C</p>
+            <label style={{ color: "#8b8b8b" }}>온도</label>
+            <p style={{ fontSize: 14 }}>{data.temperature}°C</p>
           </InlineCol>
         </InlineRow>
         <InlineRow>
           <Icon3 />
           <InlineCol>
-            <label style={{ color: '#8b8b8b' }}>습도</label>
-            <p style={{ fontSize: 14 }}>50%</p>
+            <label style={{ color: "#8b8b8b" }}>습도</label>
+            <p style={{ fontSize: 14 }}>{data.humedity * 100}%</p>
           </InlineCol>
         </InlineRow>
       </Row>

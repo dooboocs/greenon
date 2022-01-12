@@ -41,6 +41,12 @@ export const createDevice = (req, res) => {
     verifyToken(req).then(async (decoded) => {
       const user = await getRepository(User).findOne(decoded.id);
 
+      if (!user) {
+        return res
+          .status(401)
+          .json({ error: { message: "Authentication Error" } });
+      }
+
       const newDevice = await getRepository(Device).create({
         ...req.body,
         user: user.id,
@@ -58,7 +64,7 @@ export const createDevice = (req, res) => {
 export const updateDevice = (req, res) => {
   try {
     verifyToken(req).then(async (decoded) => {
-      const result = await getRepository(Device)
+      await getRepository(Device)
         .createQueryBuilder("device")
         .leftJoinAndSelect("device.user", "user")
         .where("device.id = :id", { id: req.params.id })

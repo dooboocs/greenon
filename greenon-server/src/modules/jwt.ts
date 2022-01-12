@@ -8,7 +8,7 @@ interface Token {
 
 export const verifyToken = async (req: Request) => {
   const decoded = jwt.verify(
-    req.headers.authorization.split("Bearer")[1],
+    req.headers.authorization.split("Bearer ")[1],
     process.env.JWT_SECRET
   );
   return decoded as Token;

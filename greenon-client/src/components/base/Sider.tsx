@@ -55,13 +55,15 @@ const Button = styled.button`
 const Sider = () => {
   const { modal } = useStore();
 
+  const { etc } = useStore();
+
   return (
     <SiderBox>
       <Box>
         <label>현재 위치</label>
         <Space>
           <PinIcon />
-          <p style={{ fontSize: 14, color: "#007ba8" }}>서울 강남구</p>
+          <p style={{ fontSize: 14, color: "#007ba8" }}>{etc.location}</p>
         </Space>
       </Box>
       <Box>

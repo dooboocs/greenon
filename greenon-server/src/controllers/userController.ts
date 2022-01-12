@@ -48,3 +48,23 @@ export const deleteUser = async (req, res) => {
     res.status(400).json({ error: { message: error } });
   }
 };
+
+export const changePassword = async (req, res) => {
+  try {
+    verifyToken(req).then(async (decoded) => {
+      const user = await getRepository(User).findOne(decoded.id);
+      const compareResult = await user.comparePassword(req.body.password);
+
+      if (!compareResult) {
+        res.status(400).json({ error: { message: "Incorrect password" } });
+      } else {
+        await getRepository(User).update(user.id, {
+          password: req.body.new_password,
+        });
+        res.status(200).json({ message: "OK" });
+      }
+    });
+  } catch (error) {
+    res.status(400).json({ error: { message: error } });
+  }
+};

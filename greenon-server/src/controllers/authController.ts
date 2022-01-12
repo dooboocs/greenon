@@ -4,13 +4,13 @@ import { User } from "../entity";
 export const login = async (req, res) => {
   const user = await getRepository(User).findOne({ email: req.body.email });
 
-  if (!User) {
+  if (!user) {
     res.status(401).json({ error: "Cannot find user" });
   } else {
     const comparePassword = await user.comparePassword(req.body.password);
 
     if (!comparePassword) {
-      res.status(401).jsoN({ error: "Incorrect password" });
+      res.status(401).json({ error: "Incorrect password" });
     } else {
       const accessToken = await user.generateToken();
       res.json({ token: accessToken });
