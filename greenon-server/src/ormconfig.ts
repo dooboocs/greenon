@@ -1,19 +1,16 @@
-import dotenv from "dotenv";
 import { ConnectionOptions } from "typeorm";
-import { User, Device, DeviceData } from "./entity";
-
-dotenv.config();
+import { User, Device, DeviceData, Notice, Request } from "./entity";
 
 const ormconfig: ConnectionOptions = {
   type: "mysql",
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE,
+  host: "52.79.146.233",
+  port: 3306,
+  username: "root",
+  password: "root",
+  database: "dev",
   synchronize: true,
   logging: false,
-  entities: [User, Device, DeviceData],
+  entities: [User, Device, DeviceData, Notice, Request],
 };
 
 export default ormconfig;

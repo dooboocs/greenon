@@ -1,102 +1,110 @@
 import { Device, User } from "../entity";
 import { getRepository } from "typeorm";
-import { verifyToken } from "../modules/jwt";
 
-export const getDevices = (req, res) => {
+export const getDevices = async (req, res) => {
   try {
-    verifyToken(req).then(async (decoded) => {
-      const devices = await getRepository(Device)
-        .createQueryBuilder("device")
-        .leftJoinAndSelect("device.device_data", "device_data")
-        .where("device.user = :userId", { userId: decoded.id })
-        .getMany();
+    const devices = await getRepository(Device)
+      .createQueryBuilder("device")
+      .leftJoinAndSelect("device.device_data", "device_data")
+      .where("device.user = :userId", { userId: res.locals.userId })
+      .getMany();
 
-      res.json(devices);
-    });
+    res.json(devices);
   } catch (error) {
-    res.status(400).json({ error: { message: error } });
+    res.status(400).json({ error });
   }
 };
 
-export const getDeviceInfo = (req, res) => {
+export const getDeviceInfo = async (req, res) => {
   try {
-    verifyToken(req).then(async (decoded) => {
-      const device = await getRepository(Device)
-        .createQueryBuilder("device")
-        .leftJoinAndSelect("device.device_data", "device_data")
-        .leftJoinAndSelect("device.user", "user")
-        .where("device.id = :id", { id: req.params.id })
-        .where("device.user = :userId", { userId: decoded.id })
-        .getOne();
+    const device = await getRepository(Device)
+      .createQueryBuilder("device")
+      .leftJoinAndSelect("device.device_data", "device_data")
+      .leftJoinAndSelect("device.user", "user")
+      .where("device.id = :id", { id: req.params.id })
+      .where("device.user = :userId", { userId: res.locals.userId })
+      .getOne();
 
-      return res.json(device);
-    });
+    return res.json(device);
   } catch (error) {
-    res.status(400).json({ error: { message: error } });
+    res.status(400).json({ error });
   }
 };
 
-export const createDevice = (req, res) => {
+export const createDevice = async (req, res) => {
   try {
-    verifyToken(req).then(async (decoded) => {
-      const user = await getRepository(User).findOne(decoded.id);
+    const user = await getRepository(User).findOne(res.locals.userId);
 
-      if (!user) {
-        return res
-          .status(401)
-          .json({ error: { message: "Authentication Error" } });
-      }
+    if (!user) {
+      return res
+        .status(401)
+        .json({ error: { message: "Authentication Error" } });
+    }
 
-      const newDevice = await getRepository(Device).create({
-        ...req.body,
-        user: user.id,
+    const newDevice = await getRepository(Device).create({
+      ...req.body,
+      user: user.id,
+    });
+
+    return getRepository(Device)
+      .save(newDevice)
+      .then((device) => res.json(device));
+  } catch (error) {
+    res.status(400).json({ error });
+  }
+};
+
+export const updateDevice = async (req, res) => {
+  try {
+    await getRepository(Device)
+      .createQueryBuilder("device")
+      .leftJoinAndSelect("device.user", "user")
+      .where("device.id = :id", { id: req.params.id })
+      .andWhere("device.user = :userId", { userId: res.locals.userId })
+      .getOne()
+      .then((device) => {
+        return getRepository(Device).update(device.id, req.body);
       });
 
-      return getRepository(Device)
-        .save(newDevice)
-        .then((device) => res.json(device));
-    });
+    return res.json(req.body);
   } catch (error) {
-    res.status(400).json({ error: { message: error } });
+    res.status(400).json({ error });
   }
 };
 
-export const updateDevice = (req, res) => {
+export const deleteDevice = async (req, res) => {
   try {
-    verifyToken(req).then(async (decoded) => {
-      await getRepository(Device)
-        .createQueryBuilder("device")
-        .leftJoinAndSelect("device.user", "user")
-        .where("device.id = :id", { id: req.params.id })
-        .andWhere("device.user = :userId", { userId: decoded.id })
-        .getOne()
-        .then((device) => {
-          return getRepository(Device).update(device.id, req.body);
-        });
+    const result = await getRepository(Device)
+      .createQueryBuilder("device")
+      .leftJoinAndSelect("device.user", "user")
+      .where("device.id = :id", { id: req.params.id })
+      .andWhere("device.user = :userId", { userId: res.locals.userId })
+      .getOne()
+      .then((device) => {
+        return getRepository(Device).remove(device);
+      });
 
-      return res.json(req.body);
-    });
+    return res.status(200).send(result);
   } catch (error) {
-    res.status(400).json({ error: { message: error } });
+    res.status(400).json({ error });
   }
 };
 
-export const deleteDevice = (req, res) => {
+export const updateAllDevice = async (req, res) => {
   try {
-    verifyToken(req).then(async (decoded) => {
-      const result = await getRepository(Device)
-        .createQueryBuilder("device")
-        .leftJoinAndSelect("device.user", "user")
-        .where("device.id = :id", { id: req.params.id })
-        .andWhere("device.user = :userId", { userId: decoded.id })
-        .getOne()
-        .then((device) => {
-          return getRepository(Device).remove(device);
+    await getRepository(Device)
+      .createQueryBuilder("device")
+      .leftJoinAndSelect("device.user", "user")
+      .where("device.user = :userId", { userId: res.locals.userId })
+      .getMany()
+      .then((devices) => {
+        devices.forEach((device) => {
+          getRepository(Device).update(device.id, req.body);
         });
+      });
 
-      return res.status(200).send(result);
-    });
+    return res.status(200).send(req.body);
   } catch (error) {
-    res.status(400).json({ error: { message: error } });
+    res.status(400).json({ error });
   }
 };

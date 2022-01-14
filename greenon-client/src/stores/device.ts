@@ -33,8 +33,9 @@ export interface IDeviceStore {
   offset: number;
   page: number;
   numPage: number;
-  load: () => void;
+  init: () => void;
   updateDevice: (id: string, key: string, value: any) => void;
+  updateAllDevice: (key: string, value: any) => void;
   deleteDevice: (id: string) => void;
   setPage: (page: number) => void;
   handleResize: () => void;
@@ -57,7 +58,7 @@ export const device = observable<IDeviceStore>({
     return toJS(this.devices).slice(start, end);
   },
   // Action
-  async load() {
+  async init() {
     await apis.getDevices().then((res) => {
       this.devices = res.data;
     });
@@ -70,18 +71,21 @@ export const device = observable<IDeviceStore>({
       device.id === id ? { ...device, [key]: value } : device
     );
   },
+  async updateAllDevice(key, value) {
+    await apis.updateAllDevice({ [key]: value });
+    this.devices = toJS(this.devices).map((device) => ({
+      ...device,
+      [key]: value,
+    }));
+  },
   async deleteDevice(id) {
     await apis.deleteDevice(id);
-    this.devices = toJS(this.devices).filter((device) =>
+    this.devices = toJS(this.devices).filter((device: any) =>
       device.id === id ? false : device
     );
   },
   setPage(page) {
     this.page = page;
-  },
-  handleResize() {
-    this._calcOffset();
-    this._calcNumPages();
   },
   _calcOffset() {
     if (window.innerWidth < 1710) {
@@ -92,5 +96,9 @@ export const device = observable<IDeviceStore>({
   },
   _calcNumPages() {
     this.numPage = Math.ceil(this.devices.length / this.offset);
+  },
+  handleResize() {
+    this._calcOffset();
+    this._calcNumPages();
   },
 });

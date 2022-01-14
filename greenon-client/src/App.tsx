@@ -1,4 +1,5 @@
 import React from "react";
+import { Cookies } from "react-cookie";
 import {
   BrowserRouter,
   Routes,
@@ -6,7 +7,6 @@ import {
   Navigate,
   Outlet,
 } from "react-router-dom";
-import DeviceProvider from "./components/base/DeviceProvider";
 import {
   MainContainer,
   ManageContainer,
@@ -30,6 +30,7 @@ import {
   Usage,
 } from "./pages";
 import { Agree1 } from "./pages/agree";
+import useStore from "./stores";
 
 function App() {
   return (
@@ -37,30 +38,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<PrivateOutlet />}>
-            <Route
-              path="/"
-              element={
-                <DeviceProvider>
-                  <MainContainer />
-                </DeviceProvider>
-              }
-            />
-            <Route
-              path="/devices/:device_id"
-              element={
-                <DeviceProvider>
-                  <DeviceContainer />
-                </DeviceProvider>
-              }
-            />
-            <Route
-              path="/manage"
-              element={
-                <DeviceProvider>
-                  <ManageContainer />
-                </DeviceProvider>
-              }
-            />
+            <Route path="/" element={<MainContainer />} />
+            <Route path="/devices/:device_id" element={<DeviceContainer />} />
+            <Route path="/manage" element={<ManageContainer />} />
             <Route path="/mypage" element={<MyPageContainer />} />
 
             <Route path="/profile_edit" element={<ProfileEdit />} />
@@ -90,12 +70,30 @@ function App() {
 }
 
 const PrivateOutlet = () => {
-  const user = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
+  const { device, user, etc } = useStore();
 
-  return user ? <Outlet /> : <Navigate to="/login" />;
+  React.useEffect(() => {
+    user.init();
+    device.init();
+    etc.init();
+
+    window.addEventListener("resize", device.handleResize);
+    return () => window.removeEventListener("resize", device.handleResize);
+  }, [user, device, etc]);
+
+  return token ? <Outlet /> : <Navigate to="/login" />;
 };
 
 const AuthOutlet = () => {
+  const cookies = new Cookies();
+  const token = cookies.get("token");
+  if (token) {
+    console.log(token);
+    localStorage.setItem("token", token);
+    cookies.remove("token");
+  }
+
   const user = localStorage.getItem("token");
 
   return !user ? <Outlet /> : <Navigate to="/" />;

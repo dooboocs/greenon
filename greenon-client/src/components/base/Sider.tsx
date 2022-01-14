@@ -1,3 +1,4 @@
+import { useObserver } from "mobx-react";
 import React from "react";
 import styled from "styled-components";
 import { ReactComponent as PinIcon } from "../../static/icons/icon-pin-2.svg";
@@ -57,7 +58,7 @@ const Sider = () => {
 
   const { etc } = useStore();
 
-  return (
+  return useObserver(() => (
     <SiderBox>
       <Box>
         <label>현재 위치</label>
@@ -102,7 +103,7 @@ const Sider = () => {
         </div>
       </ButtonGroup>
     </SiderBox>
-  );
+  ));
 };
 
 export default Sider;

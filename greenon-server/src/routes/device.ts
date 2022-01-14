@@ -5,7 +5,9 @@ import {
   createDevice,
   updateDevice,
   deleteDevice,
+  updateAllDevice,
 } from "../controllers/deviceController";
+import { verifyToken } from "../modules/jwt";
 
 /**
  * @swagger
@@ -31,6 +33,12 @@ const device = express.Router();
  *      responses:
  *        "200":
  *          description: Success
+ *    put:
+ *      summary: 전체 디바이스 업데이트
+ *      tags: [Devices]
+ *      responses:
+ *        "200":
+ *          description: Success
  *  /devices/:id:
  *    get:
  *      summary: 디바이스 정보 조회
@@ -52,10 +60,11 @@ const device = express.Router();
  *          description: Success
  */
 
-device.get("/", getDevices);
-device.get("/:id", getDeviceInfo);
-device.post("/", createDevice);
-device.put("/:id", updateDevice);
-device.delete("/:id", deleteDevice);
+device.get("/", verifyToken, getDevices);
+device.post("/", verifyToken, createDevice);
+device.put("/", verifyToken, updateAllDevice);
+device.get("/:id", verifyToken, getDeviceInfo);
+device.put("/:id", verifyToken, updateDevice);
+device.delete("/:id", verifyToken, deleteDevice);
 
 export default device;

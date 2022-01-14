@@ -6,6 +6,7 @@ import {
   getUserInfo,
   updateUser,
 } from "../controllers/userController";
+import { verifyToken } from "../modules/jwt";
 
 /**
  * @swagger
@@ -56,9 +57,9 @@ const user = express.Router();
  *
  */
 user.get("/", getUser);
-user.put("/", updateUser);
-user.delete("/", deleteUser);
-user.get("/detail", getUserInfo);
-user.post("/change_password", changePassword);
+user.put("/", verifyToken, updateUser);
+user.delete("/", verifyToken, deleteUser);
+user.get("/detail", verifyToken, getUserInfo);
+user.post("/change_password", verifyToken, changePassword);
 
 export default user;

@@ -5,7 +5,6 @@ import {
   UpdateDateColumn,
   OneToMany,
   ManyToOne,
-  BeforeInsert,
   getRepository,
   AfterInsert,
 } from "typeorm";

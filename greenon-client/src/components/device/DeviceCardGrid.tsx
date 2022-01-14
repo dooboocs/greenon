@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { IDevice } from "../../stores/device";
 import useStore from "../../stores";
+import { Button as MuiButton } from "@mui/material";
 
 const Grid = styled.div`
   width: 100%;
@@ -23,15 +24,16 @@ const GridItem = styled.div`
   }
 `;
 
-const Button = styled.button`
-  background-color: #e5f2f8;
-  color: #007cba;
+const Button = styled(MuiButton)<{ red?: string }>`
   width: 100%;
-  text-align: center;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  border-radius: 10px;
-  z-index: 999;
+  background-color: ${(props) =>
+    props.red === "true" ? "#f7f7f7" : "#e5f2f8"} !important;
+  color: ${(props) =>
+    props.red === "true" ? "#8b8b8b" : "#007cba"} !important;
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
 `;
 
 const DeviceCardGrid = ({ device }: { device: IDevice }) => {
@@ -105,23 +107,28 @@ const DeviceCardGrid = ({ device }: { device: IDevice }) => {
         <Button
           name="controlPower"
           onClick={handleOpenModal}
-          style={{
-            background: !device.power ? "#ffe3e3" : "#e5f2f8",
-            color: !device.power ? "#ff6b6b" : "#007cba",
-          }}
+          red={device.power ? "false" : "true"}
         >
           {device.power ? "켜짐" : "꺼짐"}
         </Button>
       </GridItem>
       <GridItem>
         <label>모드</label>
-        <Button name="controlMode" onClick={handleOpenModal}>
+        <Button
+          name="controlMode"
+          onClick={handleOpenModal}
+          red={device.power ? "false" : "true"}
+        >
           {formatMode(device.mode)}
         </Button>
       </GridItem>
       <GridItem>
         <label>시간</label>
-        <Button name="controlTime" onClick={handleOpenModal}>
+        <Button
+          name="controlTime"
+          onClick={handleOpenModal}
+          red={device.power ? "false" : "true"}
+        >
           {formatModeTime(device.mode_time)}
         </Button>
       </GridItem>

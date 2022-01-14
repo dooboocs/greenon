@@ -1,6 +1,6 @@
 * {
   box-sizing: border-box;
-  font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+  font-family: "Spoqa Han Sans Neo", "sans-serif" !important;
 }
 
 body {
@@ -54,4 +54,16 @@ button {
 
 ::-webkit-scrollbar {
   display: none;
+}
+
+.MuiButton-text {
+  flex: 1;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  text-transform: none !important;
+}
+
+.MuiButton-text.active {
+  background: #007cba !important;
+  color: #fff !important;
 }

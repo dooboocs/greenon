@@ -5,6 +5,7 @@ import { ReactComponent as SunnyIcon } from "../../static/icons/icon-weather-sun
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import useStore from "../../stores";
+import { useObserver } from "mobx-react";
 
 const MobileHeaderBox = styled.div`
   width: 100%;
@@ -33,12 +34,12 @@ const Space = styled.div`
 export const Location = () => {
   const { etc } = useStore();
 
-  return (
+  return useObserver(() => (
     <Space>
       <LocationIcon />
       <p>{etc.location}</p>
     </Space>
-  );
+  ));
 };
 
 export const Weather = () => {

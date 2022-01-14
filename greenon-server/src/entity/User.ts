@@ -55,14 +55,17 @@ export class User {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   password: string;
 
-  @Column({ unique: true })
+  @Column()
   phone: string;
 
   @Column({ default: "user" })
   role: string;
+
+  @Column({ default: "local" })
+  stratgey: string;
 
   @OneToMany(() => Device, (device) => device.user, {
     cascade: true,
@@ -72,7 +75,9 @@ export class User {
   @BeforeInsert()
   async hashPassword(): Promise<void> {
     try {
-      this.password = await bcrypt.hash(this.password, 10);
+      if (this.password) {
+        this.password = await bcrypt.hash(this.password, 10);
+      }
     } catch (e) {
       throw new Error(e);
     }
@@ -87,7 +92,7 @@ export class User {
       {
         id: this.id,
       },
-      process.env.JWT_SECRET
+      "KeyForJWTToken"
     );
   }
 }

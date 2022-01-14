@@ -5,14 +5,15 @@ interface IUser {
   email: string;
   name: string;
   phone: string;
-  getUser: () => void;
+  init: () => void;
 }
 
 export const user = observable<IUser>({
   email: "",
   name: "",
   phone: "",
-  getUser() {
+
+  init() {
     apis.getUserInfo().then((res) => {
       if (res) {
         this.email = res.data.email;

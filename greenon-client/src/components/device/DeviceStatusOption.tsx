@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import useStore from "../../stores";
+import { Button as MuiButton } from "@mui/material";
 
 interface Props {
   data: any;
@@ -9,7 +10,7 @@ interface Props {
   text: string;
 }
 
-const Button = styled.button<{ active?: boolean }>`
+const Button = styled(MuiButton)<{ active?: boolean }>`
   flex: 1;
   display: flex;
   justify-content: center;
@@ -19,20 +20,20 @@ const Button = styled.button<{ active?: boolean }>`
   border-radius: 5px;
   font-size: 16px;
   border: none;
-  background-color: ${({ active }) => (active ? "#007cba" : "inherit")};
-  color: ${({ active, theme }) => (active ? "#fff" : "#007cba")};
+  background-color: ${({ active }) => (active ? "#007cba" : "inherit")} mpo !important;
+  color: ${({ active }) => (active ? "#030303" : "#007cba")} !important;
 `;
 
 const DeviceStatusOption = ({ data, option_key, value, text }: Props) => {
   const { device } = useStore();
 
   return (
-    <Button
-      active={data[option_key] === value}
+    <MuiButton
+      className={`asd ${data[option_key] === value ? "active" : false}`}
       onClick={() => device.updateDevice(data.id, option_key, value)}
     >
       {text}
-    </Button>
+    </MuiButton>
   );
 };
 

@@ -1,3 +1,4 @@
+import { useObserver } from "mobx-react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -32,7 +33,7 @@ const ProfileEdit = () => {
 
   const { user } = useStore();
 
-  return (
+  return useObserver(() => (
     <PageTemplate headerTitle="회원 정보 수정">
       <Box>
         <ProfileImage />
@@ -63,7 +64,7 @@ const ProfileEdit = () => {
         </Button>
       </Box>
     </PageTemplate>
-  );
+  ));
 };
 
 export default ProfileEdit;

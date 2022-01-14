@@ -86,7 +86,10 @@ const DeviceContainer = () => {
         </Container>
       </PageTemplate>
     ) : (
-      <div>Loading...</div>
+      <PageTemplate>
+        <MainControlBar />
+        <Container>Empty</Container>
+      </PageTemplate>
     );
   });
 };

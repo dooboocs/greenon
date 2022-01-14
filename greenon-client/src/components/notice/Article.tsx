@@ -1,6 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import moment from "moment";
+import React from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 const ArticleBox = styled(Link)`
   width: 100%;
@@ -26,7 +27,7 @@ const BottomBox = styled.div`
   color: #8b8b8b;
 `;
 
-const Thumbnail = styled.div`
+const Thumbnail = styled.img`
   width: 60px;
   height: 60px;
   border-radius: 10px;
@@ -34,21 +35,18 @@ const Thumbnail = styled.div`
   flex-shrink: 0;
 `;
 
-const Article = () => {
+const Article = ({ data }: { data: any }) => {
   return (
-    <ArticleBox to="/notice/28">
+    <ArticleBox to={`/notice/${data.id}`} state={data}>
       <LeftBox>
-        <p>
-          제목이 들어갑니다 제목이 들어갑니다 제목이 들어갑니다 피시버전은 한
-          줄로 길게 들어갑니다
-        </p>
+        <p>{data.title}</p>
         <BottomBox>
           <label>관리자</label>
-          <label>2021.12.12</label>
-          <label>조회 12</label>
+          <label>{moment(data.created_at).format("YYYY.MM.DD")}</label>
+          <label>조회 {data.view_count}</label>
         </BottomBox>
       </LeftBox>
-      <Thumbnail />
+      {data.photoURL ? <Thumbnail src={data.photoURL} /> : false}
     </ArticleBox>
   );
 };

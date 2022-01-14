@@ -1,5 +1,4 @@
-import dotenv from "dotenv";
-dotenv.config();
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { createConnection } from "typeorm";
@@ -7,9 +6,15 @@ import session from "express-session";
 import flash from "connect-flash";
 import passport from "passport";
 import passportConfig from "./passport";
-import { authRouter, userRouter, deviceRouter } from "./routes/index";
-import bodyParser from "body-parser";
+import {
+  authRouter,
+  userRouter,
+  deviceRouter,
+  noticeRouter,
+  requestRouter,
+} from "./routes/index";
 import connectionOptions from "./ormconfig";
+import path from 'path'
 
 import swaggerUI from "swagger-ui-express";
 import specs from "./specs";
@@ -26,8 +31,6 @@ createConnection(connectionOptions)
   .then(() => {
     console.log("DB CONNECTION");
 
-    const prod = process.env.NODE_ENV === "production";
-
     const app = express();
     app.use(cors());
 
@@ -38,13 +41,12 @@ createConnection(connectionOptions)
 
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
-    app.use(bodyParser.urlencoded({ extended: true }));
 
     app.use(
       session({
         resave: false,
         saveUninitialized: false,
-        secret: process.env.COOKIE_SECRET,
+        secret: "KeyForCookie",
         cookie: {
           httpOnly: true,
           secure: false,
@@ -56,10 +58,14 @@ createConnection(connectionOptions)
     app.use(passport.initialize());
     app.use(passport.session());
 
+    app.use('/uploads', express.static(__dirname + "/../uploads"))
+
     app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
     app.use("/auth", authRouter);
     app.use("/users", userRouter);
     app.use("/devices", deviceRouter);
+    app.use("/notices", noticeRouter);
+    app.use("/requests", requestRouter);
 
     app.listen(3000, () => {
       console.log(`Express server is running`);

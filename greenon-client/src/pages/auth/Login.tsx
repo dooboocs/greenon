@@ -82,7 +82,9 @@ const Login = () => {
             </HorizontalBox>
             <Button
               style={{ background: "#ffe812", color: "#000" }}
-              onClick={apis.kakaoLogin}
+              onClick={() =>
+                (window.location.href = "http://52.79.146.233:3000/auth/kakao")
+              }
             >
               카카오톡으로 시작하기
             </Button>
