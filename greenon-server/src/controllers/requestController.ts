@@ -2,7 +2,7 @@ import { getRepository } from "typeorm";
 import { Request } from "../entity";
 
 export const createRequest = async (req, res) => {
-  
+  console.log("File: ", req.file);
   const request = await getRepository(Request).create({
     username: req.body.username,
     phone: req.body.phone,

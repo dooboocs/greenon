@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { InputTemplate } from ".";
 
 interface TextInputProps {
+  name?: string;
   type: string;
   label: string;
   background?: string;
@@ -36,6 +37,7 @@ const Input = styled.input`
 `;
 
 const TextInput: React.FC<TextInputProps> = ({
+  name,
   type,
   label,
   background,
@@ -46,7 +48,7 @@ const TextInput: React.FC<TextInputProps> = ({
   return (
     <InputTemplate label={label}>
       <InputBox background={background}>
-        <Input type={type} onChange={onChange} value={value} />
+        <Input name={name} type={type} onChange={onChange} value={value} />
         {right}
       </InputBox>
     </InputTemplate>

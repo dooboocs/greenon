@@ -42,6 +42,12 @@ export const apis = {
     axios.get(
       `https://api.bigdatacloud.net/data/ip-geolocation?localityLanguage=ko&key=c8702a97debe47f2afba794def1d2b09`
     ),
-  createRequest: (inputs: any) => instance.post("/requests", inputs),
+  createRequest: (inputs: any) =>
+    axios({
+      method: "POST",
+      url: "http://52.79.146.233:3000/requests",
+      data: inputs,
+      headers: { "Content-Type": "multipart/form-data" },
+    }),
   getNotices: () => instance.get("/notices"),
 };

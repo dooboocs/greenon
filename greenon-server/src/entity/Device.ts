@@ -115,26 +115,42 @@ export class Device {
 
   @AfterInsert()
   async syncDeviceData(): Promise<void> {
-    this.addDeviceData();
-    setInterval(this.addDeviceData.bind(this), 600000);
-  }
+    const newDeviceData = await getRepository(DeviceData).create({
+      bio_air_roll: 50,
+      air_quailty: 50,
+      food_poisoning: 50,
+      find_dust: 50,
+      temperature: 20,
+      humedity: 0.5,
+      device: this,
+    });
 
-  async addDeviceData() {
-    try {
-      const newDeviceData = await getRepository(DeviceData).create({
-        bio_air_roll: 50,
-        air_quailty: 50,
-        food_poisoning: 50,
-        find_dust: 50,
-        temperature: 20,
-        humedity: 0.5,
-        device: this,
-      });
+    getRepository(DeviceData).save(newDeviceData);
+    console.log(`Create DeviceData at ${moment().format("HH:mm:ss")}`);
 
-      getRepository(DeviceData).save(newDeviceData);
-      console.log(`Create DeviceData at ${moment().format("HH:mm:ss")}`);
-    } catch (err) {
-      throw new Error(err);
-    }
+    let interval = setInterval(async () => {
+      try {
+        if (moment().format("HH:mm") === "00:00") {
+          await getRepository(DeviceData).clear();
+        } else {
+          const newDeviceData = await getRepository(DeviceData).create({
+            bio_air_roll: 50,
+            air_quailty: 50,
+            food_poisoning: 50,
+            find_dust: 50,
+            temperature: 20,
+            humedity: 0.5,
+            device: this,
+          });
+
+          await getRepository(DeviceData).save(newDeviceData);
+          console.log(`Create DeviceData at ${moment().format("HH:mm:ss")}`);
+        }
+      } catch (err) {
+        if (err.name === "QueryFailedError") {
+          clearInterval(interval);
+        }
+      }
+    }, 600000);
   }
 }

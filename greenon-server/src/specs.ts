@@ -16,7 +16,7 @@ const options = {
       },
     ],
   },
-  apis: ["./src/entity/*.ts", "./src/routes/*.ts"],
+  apis: ["./src/entity/*.ts", "./src/routes/*.ts", "./routes/*.js"],
 };
 
 export default swaggerJSDoc(options);

@@ -1,13 +1,15 @@
-import React from 'react';
-import styled from 'styled-components';
-import { PageTemplate } from '../components/base';
+import { Button } from "@mui/material";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { PageTemplate } from "../components/base";
 import {
   CheckInput,
   TextInput,
   PhotoInput,
   TextArea,
-  Button,
-} from '../components/common';
+} from "../components/common";
+import { apis } from "../lib/axios";
 
 const Box = styled.div`
   display: flex;
@@ -25,17 +27,80 @@ const Box = styled.div`
 `;
 
 const Request = () => {
+  const [inputs, setInputs] = React.useState<any>({
+    username: "",
+    phone: "",
+    email: "",
+    title: "",
+    content: "",
+  });
+  const [submit, setSubmit] = React.useState(false);
+  const navigate = useNavigate();
+
+  const onSubmit = async () => {
+    let formData = new FormData();
+    Object.keys(inputs).forEach((key) => {
+      formData.append(key, inputs[key]);
+    });
+    apis.createRequest(formData).then((res) => {
+      navigate(-1);
+    });
+  };
+
+  const onChange = (e: any) => {
+    const { name, value } = e.target;
+    setInputs((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const uploadImage = (e: any) => {
+    const img = e.target.files[0];
+    setInputs((prev) => ({ ...prev, image: img }));
+  };
+
+  React.useEffect(() => {
+    if (Object.values(inputs).every((i) => i !== "")) {
+      setSubmit(true);
+    }
+  }, [inputs]);
+
   return (
     <PageTemplate headerTitle="문의하기">
       <Box>
-        <TextInput type="text" label="성함" />
-        <TextInput type="text" label="연락처" />
-        <TextInput type="email" label="메일주소" />
-        <TextInput type="text" label="제목" />
-        <TextArea label="문의 내용" />
-        <PhotoInput label="문의 내용" />
+        <TextInput
+          name="username"
+          type="text"
+          label="성함"
+          onChange={onChange}
+        />
+        <TextInput
+          name="phone"
+          type="text"
+          label="연락처"
+          onChange={onChange}
+        />
+        <TextInput
+          name="email"
+          type="email"
+          label="메일주소"
+          onChange={onChange}
+        />
+        <TextInput name="title" type="text" label="제목" onChange={onChange} />
+        <TextArea name="content" label="문의 내용" onChange={onChange} />
+        <PhotoInput label="문의 내용" name="image" onChange={uploadImage} />
         <CheckInput title="개인정보 수집이용 동의" id="check1" />
-        <Button title="다음" />
+        <Button
+          variant="contained"
+          size="large"
+          style={{
+            background: submit ? "#007cba" : "rgba(0, 0, 0, 0.12)",
+            fontSize: 16,
+            boxShadow: "none",
+          }}
+          disabled={!submit}
+          onClick={onSubmit}
+        >
+          제출
+        </Button>
       </Box>
     </PageTemplate>
   );
