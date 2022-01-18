@@ -71,12 +71,13 @@ export const kakaoLogin = async (req, res) => {
     const newUser = await getRepository(User).create({
       email: user.data.kakao_account.email,
       name: user.data.kakao_account.profile.nickname,
-      stratgey: "kakao",
+      strategy: "kakao",
       phone: "01012341234",
     });
+    
     const result = await getRepository(User).save(newUser);
     const token = await result.generateToken();
-    console.log(token);
+    
     res.append("Set-Cookie", `token=${token}; Path=/;`);
     res.redirect("http://52.79.146.233");
   } else {

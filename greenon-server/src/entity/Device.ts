@@ -5,12 +5,9 @@ import {
   UpdateDateColumn,
   OneToMany,
   ManyToOne,
-  getRepository,
-  AfterInsert,
 } from "typeorm";
 import { User } from ".";
 import { DeviceData } from "./DeviceData";
-import moment from "moment";
 
 /**
  * @swagger
@@ -112,45 +109,4 @@ export class Device {
 
   @UpdateDateColumn()
   updated_at: Date;
-
-  @AfterInsert()
-  async syncDeviceData(): Promise<void> {
-    const newDeviceData = await getRepository(DeviceData).create({
-      bio_air_roll: 50,
-      air_quailty: 50,
-      food_poisoning: 50,
-      find_dust: 50,
-      temperature: 20,
-      humedity: 0.5,
-      device: this,
-    });
-
-    getRepository(DeviceData).save(newDeviceData);
-    console.log(`Create DeviceData at ${moment().format("HH:mm:ss")}`);
-
-    let interval = setInterval(async () => {
-      try {
-        if (moment().format("HH:mm") === "00:00") {
-          await getRepository(DeviceData).clear();
-        } else {
-          const newDeviceData = await getRepository(DeviceData).create({
-            bio_air_roll: 50,
-            air_quailty: 50,
-            food_poisoning: 50,
-            find_dust: 50,
-            temperature: 20,
-            humedity: 0.5,
-            device: this,
-          });
-
-          await getRepository(DeviceData).save(newDeviceData);
-          console.log(`Create DeviceData at ${moment().format("HH:mm:ss")}`);
-        }
-      } catch (err) {
-        if (err.name === "QueryFailedError") {
-          clearInterval(interval);
-        }
-      }
-    }, 600000);
-  }
 }

@@ -58,14 +58,14 @@ export class User {
   @Column({ nullable: true })
   password: string;
 
-  @Column()
+  @Column({ nullable: true })
   phone: string;
 
-  @Column({ default: "user" })
-  role: string;
+  @Column({ default: false })
+  isAdmin: boolean;
 
   @Column({ default: "local" })
-  stratgey: string;
+  strategy: string;
 
   @OneToMany(() => Device, (device) => device.user, {
     cascade: true,

@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { ReactComponent as AirPuriIcon } from "../../static/icons/icon-airpuri.svg";
 import useStore from "../../stores";
 import { IDevice } from "../../stores/device";
+import { Alert, Button as MuiButton, Snackbar } from "@mui/material";
 
 const ManageCardBox = styled(Link)`
   display: flex;
@@ -45,12 +46,33 @@ const Button = styled.div<{ background: string; color: string }>`
 `;
 
 const ManageCard = ({ data }: { data: IDevice }) => {
+  const [open, setOpen] = React.useState(false);
+  const [isMobile, setIsMobile] = React.useState(false);
+
   const { device } = useStore();
 
   const handleOnDelete = (e: any) => {
     e.preventDefault();
+    setOpen(true);
     device.deleteDevice(data.id);
+    setTimeout(() => {
+      setOpen(false);
+    }, 2000);
   };
+
+  const handleResize = () => {
+    if (window.innerWidth < 768) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
+
+  React.useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <ManageCardBox to={`/devices/${data.id}`}>

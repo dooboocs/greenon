@@ -1,4 +1,4 @@
-import { Device, User } from "../entity";
+import { Device, DeviceData, User } from "../entity";
 import { getRepository } from "typeorm";
 
 export const getDevices = async (req, res) => {
@@ -107,4 +107,26 @@ export const updateAllDevice = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error });
   }
+};
+
+export const createSampleDeviceData = async () => {
+  const all_devices = await getRepository(Device).find();
+
+  all_devices.forEach(async (device) => {
+    const sampleDeviceData = await getRepository(DeviceData).create({
+      bio_air_roll: 50,
+      air_quailty: 50,
+      food_poisoning: 50,
+      find_dust: 50,
+      temperature: 20,
+      humedity: 0.5,
+      device,
+    });
+
+    await getRepository(DeviceData).save(sampleDeviceData);
+  });
+};
+
+export const clearDeviceData = async () => {
+  await getRepository(DeviceData).clear();
 };
