@@ -21,6 +21,8 @@ import {
   createSampleDeviceData,
   clearDeviceData,
 } from "./controllers/deviceController";
+import moment from "moment";
+import bodyParser from "body-parser";
 
 declare global {
   namespace Express {
@@ -36,8 +38,9 @@ createConnection(connectionOptions)
     console.log("Database Connected :)");
 
     // Store DeviceData every 10 minutes
-    schedule.scheduleJob("* */10 * * * *", () => {
+    schedule.scheduleJob("0 */10 * * * *", () => {
       createSampleDeviceData();
+      console.log(moment().format("HH:mm:ss"));
     });
 
     // Clear DeviceData on 00:00:00
@@ -53,8 +56,8 @@ app.use(cors());
 
 app.set("port", process.env.PORT || 3000);
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(
   session({

@@ -1,7 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { PageTemplate } from "../components/base";
 import { Division } from "../components/common";
 
 import { ReactComponent as ProfileIcon } from "../static/icons/icon-modifyprofile.svg";
@@ -93,7 +92,7 @@ const MyPageContainer = () => {
   const { user } = useStore();
 
   return (
-    <PageTemplate>
+    <>
       <Container>
         <div className="info-wrapper">
           <div className="info-left">
@@ -136,7 +135,7 @@ const MyPageContainer = () => {
           <div className="box" />
         </div>
       </Container>
-    </PageTemplate>
+    </>
   );
 };
 

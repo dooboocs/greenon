@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import useStore from "../../stores";
-import { Alert, Button, Snackbar } from "@mui/material";
+import { Button } from "@mui/material";
 
 const Box = styled.div`
   width: 100%;
@@ -30,31 +30,12 @@ const Row = styled.div`
 `;
 
 const ControlDevice = () => {
-  const { device } = useStore();
-  const [open, setOpen] = React.useState(false);
-  const [isMobile, setIsMobile] = React.useState(false);
+  const { device, toast } = useStore();
 
   const handleClick = (key: string, value: any) => {
-    setOpen(true);
+    toast.openToast("전체 디바이스에 성공적으로 반영되었습니다");
     device.updateAllDevice(key, value);
-    setTimeout(() => {
-      setOpen(false);
-    }, 2000);
   };
-
-  const handleResize = () => {
-    if (window.innerWidth < 768) {
-      setIsMobile(true);
-    } else {
-      setIsMobile(false);
-    }
-  };
-
-  React.useEffect(() => {
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   return (
     <Box>
@@ -93,15 +74,6 @@ const ControlDevice = () => {
           </Button>
         </div>
       </Row>
-      <Snackbar
-        open={open}
-        anchorOrigin={{
-          vertical: isMobile ? "top" : "bottom",
-          horizontal: isMobile ? "center" : "right",
-        }}
-      >
-        <Alert severity="info">전체 디바이스에 성공적으로 반영되었습니다</Alert>
-      </Snackbar>
     </Box>
   );
 };

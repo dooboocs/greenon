@@ -56,7 +56,7 @@ const DeviceChart = ({ chartData }: { chartData: any }) => {
 
   let sortedData = chartData.sort(
     (a: IDeviceData, b: IDeviceData) =>
-      moment(a.created_at) > moment(b.created_at)
+      new Date(a.created_at).valueOf() - new Date(b.created_at).valueOf()
   );
 
   const data: any = {

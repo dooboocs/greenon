@@ -52,6 +52,11 @@ button {
   font-size: inherit;
 }
 
+button:disabled {
+  background: #f7f7f7;
+  color: #8b8b8b;
+}
+
 ::-webkit-scrollbar {
   display: none;
 }

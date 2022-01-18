@@ -19,7 +19,7 @@ const ControlPower = ({ device_id }: { device_id: string }) => {
     const target = toJS(device.devices).filter(
       (device: any) => device.id === device_id
     )[0];
-    const power = target.power;
+    const power = target ? target.power : false;
 
     return (
       <>

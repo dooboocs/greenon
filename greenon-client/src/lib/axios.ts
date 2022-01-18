@@ -10,6 +10,11 @@ export const apis = {
       email,
       password,
     }),
+  register: async (email: string, password: string) =>
+    instance.post("/auth/register", {
+      email,
+      password,
+    }),
   getUserInfo: async () =>
     instance.get("/users/detail", {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },

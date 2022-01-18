@@ -1,5 +1,7 @@
 import { observable, toJS } from "mobx";
 import { apis } from "../lib/axios";
+import { app } from "./app";
+import { toast } from "./toast";
 
 export interface IDevice {
   id: string;
@@ -33,14 +35,13 @@ export interface IDeviceStore {
   offset: number;
   page: number;
   numPage: number;
+  loading: boolean;
+
   init: () => void;
   updateDevice: (id: string, key: string, value: any) => void;
   updateAllDevice: (key: string, value: any) => void;
   deleteDevice: (id: string) => void;
   setPage: (page: number) => void;
-  handleResize: () => void;
-  _calcNumPages: () => void;
-  _calcOffset: () => void;
 }
 
 export const device = observable<IDeviceStore>({
@@ -49,6 +50,7 @@ export const device = observable<IDeviceStore>({
   offset: 6,
   page: 0,
   numPage: 1,
+  loading: false,
 
   // Computed
   get pageData() {
@@ -63,13 +65,15 @@ export const device = observable<IDeviceStore>({
       this.devices = res.data;
     });
 
-    this.handleResize();
+    // loading delay
+    app.delayedLoading(false);
   },
   async updateDevice(id, key, value) {
     await apis.updateDevice(id, { [key]: value });
     this.devices = toJS(this.devices).map((device) =>
       device.id === id ? { ...device, [key]: value } : device
     );
+    app.delayedLoading(true);
   },
   async updateAllDevice(key, value) {
     await apis.updateAllDevice({ [key]: value });
@@ -77,6 +81,8 @@ export const device = observable<IDeviceStore>({
       ...device,
       [key]: value,
     }));
+
+    app.delayedLoading(true);
   },
   async deleteDevice(id) {
     await apis.deleteDevice(id);
@@ -86,19 +92,5 @@ export const device = observable<IDeviceStore>({
   },
   setPage(page) {
     this.page = page;
-  },
-  _calcOffset() {
-    if (window.innerWidth < 1710) {
-      this.offset = 6;
-    } else {
-      this.offset = 8;
-    }
-  },
-  _calcNumPages() {
-    this.numPage = Math.ceil(this.devices.length / this.offset);
-  },
-  handleResize() {
-    this._calcOffset();
-    this._calcNumPages();
   },
 });

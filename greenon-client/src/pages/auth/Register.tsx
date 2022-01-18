@@ -89,7 +89,12 @@ const Register: React.FC = () => {
             <label htmlFor="check4" />
           </CheckInput>
         </FormWrapper>
-        <ColoredButton onClick={onSubmit}>다음</ColoredButton>
+        <ColoredButton
+          onClick={onSubmit}
+          disabled={!Object.values(checkInputs).every((val) => val)}
+        >
+          다음
+        </ColoredButton>
       </AuthDynamicModal>
     </AuthPageTemplate>
   );

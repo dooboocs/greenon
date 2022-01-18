@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { PageTemplate } from "../components/base";
 import { ManageGrid } from "../components/manage";
 import { AddIcon } from "../components/icons";
 
@@ -48,7 +47,7 @@ const ManageContainer = () => {
   const { device, modal } = useStore();
 
   return useObserver(() => (
-    <PageTemplate>
+    <>
       <Box>
         <GridWrapper>
           <AddButton onClick={() => modal.handleOpen("addDevice")}>
@@ -60,7 +59,7 @@ const ManageContainer = () => {
         </GridWrapper>
       </Box>
       <Pagenation />
-    </PageTemplate>
+    </>
   ));
 };
 

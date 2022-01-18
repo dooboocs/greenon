@@ -1,8 +1,12 @@
-import React from 'react';
-import { PageTemplate } from '../components/base';
+import React from "react";
+import { ContentHeader } from "../components/base";
 
 const Usage = () => {
-  return <PageTemplate headerTitle="이용 방법"></PageTemplate>;
+  return (
+    <>
+      <ContentHeader title="이용 방법" />
+    </>
+  );
 };
 
 export default Usage;

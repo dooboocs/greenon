@@ -114,12 +114,12 @@ export const createSampleDeviceData = async () => {
 
   all_devices.forEach(async (device) => {
     const sampleDeviceData = await getRepository(DeviceData).create({
-      bio_air_roll: 50,
-      air_quailty: 50,
-      food_poisoning: 50,
-      find_dust: 50,
-      temperature: 20,
-      humedity: 0.5,
+      bio_air_roll: Math.round(Math.random() * (90 - 30)) + 30,
+      air_quailty: Math.round(Math.random() * (90 - 30)) + 30,
+      food_poisoning: Math.round(Math.random() * (90 - 30)) + 30,
+      find_dust: Math.round(Math.random() * (90 - 30)) + 30,
+      temperature: Math.round(Math.random() * (90 - 30)) + 30,
+      humedity: Math.round(Math.random() * (8 - 3) + 3) / 10,
       device,
     });
 

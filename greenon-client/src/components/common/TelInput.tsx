@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Input, Button } from '.';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { Input, Button } from ".";
 
 const Form = styled.form`
   width: 100%;
@@ -37,8 +37,10 @@ const RightButton = styled(Button)`
 `;
 
 const TelInput = () => {
+  const [time, setTime] = useState();
+
   return (
-    <Form>
+    <Form id="tel-form">
       <FormHeader>
         <label>휴대폰 인증</label>
         <small>이메일 조회를 위한 전화번호 인증이 필요합니다.</small>

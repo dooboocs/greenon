@@ -1,6 +1,6 @@
 import React from "react";
 import { AuthDynamicModal } from "../../components/auth";
-import { PageTemplate } from "../../components/base";
+import { ContentHeader } from "../../components/base";
 
 const Agree1 = () => {
   const [isPc, setIsPc] = React.useState(false);
@@ -14,7 +14,10 @@ const Agree1 = () => {
   }, []);
 
   return isPc ? (
-    <PageTemplate headerTitle="약관 동의">이용약관</PageTemplate>
+    <>
+      <ContentHeader title="약관 동의" />
+      이용약관
+    </>
   ) : (
     <AuthDynamicModal headerTitle="약관 동의">이용약관</AuthDynamicModal>
   );

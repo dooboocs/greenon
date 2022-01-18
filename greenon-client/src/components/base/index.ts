@@ -4,4 +4,5 @@ export { default as ContentHeader } from "./ContentHeader";
 export { default as Sider } from "./Sider";
 export { default as Footer } from "./Footer";
 export { default as BottomTab } from "./BottomTab";
-export { default as PageTemplate } from "./PageTemplate";
+export { default as MainLayout } from "./MainLayout";
+export { default as Toast } from "./Toast";

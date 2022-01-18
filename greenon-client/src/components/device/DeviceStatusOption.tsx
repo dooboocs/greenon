@@ -10,20 +10,6 @@ interface Props {
   text: string;
 }
 
-const Button = styled(MuiButton)<{ active?: boolean }>`
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  border-radius: 5px;
-  font-size: 16px;
-  border: none;
-  background-color: ${({ active }) => (active ? "#007cba" : "inherit")} mpo !important;
-  color: ${({ active }) => (active ? "#030303" : "#007cba")} !important;
-`;
-
 const DeviceStatusOption = ({ data, option_key, value, text }: Props) => {
   const { device } = useStore();
 

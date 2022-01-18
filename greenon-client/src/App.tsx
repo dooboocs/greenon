@@ -1,3 +1,4 @@
+import { runInAction } from "mobx";
 import React from "react";
 import { Cookies } from "react-cookie";
 import {
@@ -7,6 +8,7 @@ import {
   Navigate,
   Outlet,
 } from "react-router-dom";
+import { MainLayout } from "./components/base";
 import {
   MainContainer,
   ManageContainer,
@@ -38,20 +40,21 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<PrivateOutlet />}>
-            <Route path="/" element={<MainContainer />} />
-            <Route path="/devices/:device_id" element={<DeviceContainer />} />
-            <Route path="/manage" element={<ManageContainer />} />
-            <Route path="/mypage" element={<MyPageContainer />} />
-
-            <Route path="/profile_edit" element={<ProfileEdit />} />
-            <Route path="/change_password" element={<ChangePassword />} />
-            <Route path="/company" element={<Company />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/notice" element={<Notice />} />
-            <Route path="/notice/:notice_id" element={<NoticeDetail />} />
-            <Route path="/usage" element={<Usage />} />
-            <Route path="/request" element={<Request />} />
-            <Route path="/settings" element={<Settings />} />
+            <Route element={<MainLayout />}>
+              <Route path="/" element={<MainContainer />} />
+              <Route path="/devices/:id" element={<DeviceContainer />} />
+              <Route path="/manage" element={<ManageContainer />} />
+              <Route path="/mypage" element={<MyPageContainer />} />
+              <Route path="/profile_edit" element={<ProfileEdit />} />
+              <Route path="/change_password" element={<ChangePassword />} />
+              <Route path="/company" element={<Company />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/notice" element={<Notice />} />
+              <Route path="/notice/:notice_id" element={<NoticeDetail />} />
+              <Route path="/usage" element={<Usage />} />
+              <Route path="/request" element={<Request />} />
+              <Route path="/settings" element={<Settings />} />
+            </Route>
           </Route>
 
           <Route element={<AuthOutlet />}>
@@ -71,16 +74,6 @@ function App() {
 
 const PrivateOutlet = () => {
   const token = localStorage.getItem("token");
-  const { device, user, etc } = useStore();
-
-  React.useEffect(() => {
-    user.init();
-    device.init();
-    etc.init();
-
-    window.addEventListener("resize", device.handleResize);
-    return () => window.removeEventListener("resize", device.handleResize);
-  }, [user, device, etc]);
 
   return token ? <Outlet /> : <Navigate to="/login" />;
 };

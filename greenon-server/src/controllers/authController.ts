@@ -21,6 +21,7 @@ export const login = async (req, res) => {
 };
 
 export const register = async (req, res) => {
+  console.log(req.body);
   try {
     const userRepo = getRepository(User);
     const checkEmail = await userRepo.findOne({ email: req.body.email });
@@ -74,10 +75,10 @@ export const kakaoLogin = async (req, res) => {
       strategy: "kakao",
       phone: "01012341234",
     });
-    
+
     const result = await getRepository(User).save(newUser);
     const token = await result.generateToken();
-    
+
     res.append("Set-Cookie", `token=${token}; Path=/;`);
     res.redirect("http://52.79.146.233");
   } else {

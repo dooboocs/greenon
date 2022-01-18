@@ -10,6 +10,7 @@ interface TextInputProps {
   right?: React.ReactNode;
   onChange?: (e: any) => void;
   value?: any;
+  error?: string;
 }
 
 const InputBox = styled.div<{ background?: string }>`
@@ -44,6 +45,7 @@ const TextInput: React.FC<TextInputProps> = ({
   right,
   onChange,
   value,
+  error,
 }) => {
   return (
     <InputTemplate label={label}>
@@ -51,6 +53,7 @@ const TextInput: React.FC<TextInputProps> = ({
         <Input name={name} type={type} onChange={onChange} value={value} />
         {right}
       </InputBox>
+      <div style={{ fontSize: 14, color: "red" }}>{error}</div>
     </InputTemplate>
   );
 };

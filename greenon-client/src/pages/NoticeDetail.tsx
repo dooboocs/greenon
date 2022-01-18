@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { PageTemplate } from "../components/base";
+import { ContentHeader } from "../components/base";
 import moment from "moment";
 
 const Header = styled.div`
@@ -29,7 +29,8 @@ const NoticeDetail = () => {
   const { state }: any = location;
 
   return (
-    <PageTemplate headerTitle="공지사항">
+    <React.Fragment>
+      <ContentHeader title="공지사항" />
       {state ? (
         <>
           <Header>
@@ -48,7 +49,7 @@ const NoticeDetail = () => {
       ) : (
         <div>Not Found</div>
       )}
-    </PageTemplate>
+    </React.Fragment>
   );
 };
 

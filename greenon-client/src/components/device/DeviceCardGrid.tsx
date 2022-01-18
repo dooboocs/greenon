@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import { IDevice } from "../../stores/device";
 import useStore from "../../stores";
@@ -67,40 +67,38 @@ const DeviceCardGrid = ({ device }: { device: IDevice }) => {
     modal.setTargetDevice(device.id);
   }
 
-  const {
-    bio_air_roll,
-    air_quailty,
-    find_dust,
-    food_poisoning,
-    temperature,
-    humedity,
-  } = device.device_data[0];
+  const renderData = (key: string, subfix?: string) => {
+    subfix = subfix ? subfix : "";
+    return device.device_data[0]
+      ? `${device.device_data[0][key]}${subfix}`
+      : "-";
+  };
 
   return (
     <Grid>
       <GridItem>
         <label>바이오에어로졸</label>
-        <p>{bio_air_roll}</p>
+        <p>{renderData("bio_air_roll")}</p>
       </GridItem>
       <GridItem>
         <label>공기질</label>
-        <p>{air_quailty}</p>
+        <p>{renderData("air_quailty")}</p>
       </GridItem>
       <GridItem>
         <label>미세먼지</label>
-        <p>{find_dust}PM</p>
+        <p>{renderData("find_dust", "PM")}</p>
       </GridItem>
       <GridItem>
         <label>식중독지수</label>
-        <p>{food_poisoning}</p>
+        <p>{renderData("food_poisoning")}</p>
       </GridItem>
       <GridItem>
         <label>온도</label>
-        <p>{temperature}°C</p>
+        <p>{renderData("temperature", "°C")}</p>
       </GridItem>
       <GridItem>
         <label>습도</label>
-        <p>{humedity * 100}%</p>
+        <p>{renderData("humedity", "%")}</p>
       </GridItem>
       <GridItem>
         <label>전원</label>

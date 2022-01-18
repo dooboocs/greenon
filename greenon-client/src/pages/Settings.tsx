@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { PageTemplate } from "../components/base";
+import { ContentHeader } from "../components/base";
 
 import { ReactComponent as DepthIcon } from "../static/icons/icon-depth.svg";
 
@@ -57,7 +57,8 @@ const Settings = () => {
   }
 
   return (
-    <PageTemplate headerTitle="설정">
+    <>
+      <ContentHeader title="설정" />
       <Box>
         <Col>
           <Row>
@@ -126,7 +127,7 @@ const Settings = () => {
           </Row>
         </Col>
       </Box>
-    </PageTemplate>
+    </>
   );
 };
 

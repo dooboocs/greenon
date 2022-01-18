@@ -2,7 +2,7 @@ import { useObserver } from "mobx-react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { PageTemplate } from "../components/base";
+import { ContentHeader } from "../components/base";
 import { Button, TextInput } from "../components/common";
 import useStore from "../stores";
 
@@ -34,7 +34,8 @@ const ProfileEdit = () => {
   const { user } = useStore();
 
   return useObserver(() => (
-    <PageTemplate headerTitle="회원 정보 수정">
+    <>
+      <ContentHeader title="회원 정보 수정" />
       <Box>
         <ProfileImage />
         <TextInput
@@ -63,7 +64,7 @@ const ProfileEdit = () => {
           비밀번호 변경
         </Button>
       </Box>
-    </PageTemplate>
+    </>
   ));
 };
 

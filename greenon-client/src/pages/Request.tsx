@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { PageTemplate } from "../components/base";
+import { ContentHeader } from "../components/base";
 import {
   CheckInput,
   TextInput,
@@ -64,7 +64,8 @@ const Request = () => {
   }, [inputs]);
 
   return (
-    <PageTemplate headerTitle="문의하기">
+    <>
+      <ContentHeader title="문의하기" />
       <Box>
         <TextInput
           name="username"
@@ -102,7 +103,7 @@ const Request = () => {
           제출
         </Button>
       </Box>
-    </PageTemplate>
+    </>
   );
 };
 

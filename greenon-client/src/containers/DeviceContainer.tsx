@@ -1,9 +1,8 @@
-import { toJS } from "mobx";
-import { useObserver } from "mobx-react";
 import React from "react";
+import { useObserver } from "mobx-react";
+import { toJS } from "mobx";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { PageTemplate } from "../components/base";
 import { Division } from "../components/common";
 import {
   DeviceChart,
@@ -14,6 +13,7 @@ import {
 import { MainControlBar } from "../components/main";
 import useStore from "../stores";
 import { IDevice } from "../stores/device";
+import Loading from "../components/base/Loading";
 
 const Container = styled.div`
   width: 100%;
@@ -56,16 +56,16 @@ const Right = styled.div`
 `;
 
 const DeviceContainer = () => {
-  const { device } = useStore();
-  const { device_id } = useParams();
+  const { id } = useParams();
+  const { app, device } = useStore();
 
   return useObserver(() => {
     const targetDevice: any = toJS(device.devices).filter(
-      (device: IDevice) => device.id === device_id
+      (device: IDevice) => device.id === id
     )[0];
 
     return targetDevice ? (
-      <PageTemplate>
+      <>
         <MainControlBar />
         <Container>
           <Box>
@@ -84,12 +84,13 @@ const DeviceContainer = () => {
             </Right>
           </Box>
         </Container>
-      </PageTemplate>
+        <Loading isLoading={app.updateLoading} />
+      </>
     ) : (
-      <PageTemplate>
+      <>
         <MainControlBar />
         <Container>Empty</Container>
-      </PageTemplate>
+      </>
     );
   });
 };
