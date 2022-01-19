@@ -1,4 +1,3 @@
-import { runInAction } from "mobx";
 import React from "react";
 import { Cookies } from "react-cookie";
 import {
@@ -32,7 +31,6 @@ import {
   Usage,
 } from "./pages";
 import { Agree1 } from "./pages/agree";
-import useStore from "./stores";
 
 function App() {
   return (

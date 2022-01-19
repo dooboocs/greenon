@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Input, Button } from ".";
 
@@ -37,8 +37,6 @@ const RightButton = styled(Button)`
 `;
 
 const TelInput = () => {
-  const [time, setTime] = useState();
-
   return (
     <Form id="tel-form">
       <FormHeader>

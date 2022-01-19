@@ -4,7 +4,6 @@ import { BottomTab, Footer, Header, MobileHeader, Sider, Toast } from ".";
 import ResponsiveModal from "../modal/ResponsiveModal";
 import { Outlet } from "react-router-dom";
 import useStore from "../../stores";
-import Loading from "./Loading";
 import { runInAction } from "mobx";
 import { useObserver } from "mobx-react";
 
@@ -36,29 +35,29 @@ const ContentBox = styled.div`
 
 const MainLayout = () => {
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
-  const { app, user, etc, device } = useStore();
-
-  const handleResize = () => {
-    setInnerWidth(window.innerWidth);
-    runInAction(() => {
-      if (window.innerWidth < 1710) {
-        device.offset = 6;
-        device.numPage = Math.ceil(device.devices.length / 6);
-      } else {
-        device.offset = 8;
-        device.numPage = Math.ceil(device.devices.length / 8);
-      }
-    });
-  };
+  const { user, etc, device } = useStore();
 
   useEffect(() => {
+    const handleResize = () => {
+      setInnerWidth(window.innerWidth);
+      runInAction(() => {
+        if (window.innerWidth < 1710) {
+          device.offset = 6;
+          device.numPage = Math.ceil(device.devices.length / 6);
+        } else {
+          device.offset = 8;
+          device.numPage = Math.ceil(device.devices.length / 8);
+        }
+      });
+    };
+
     device.init();
     user.init();
     etc.init();
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [device, etc, user]);
 
   return useObserver(() => (
     <MainLayoutBox>

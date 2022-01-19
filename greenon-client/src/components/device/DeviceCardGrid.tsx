@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import styled from "styled-components";
 import { IDevice } from "../../stores/device";
 import useStore from "../../stores";

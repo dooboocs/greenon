@@ -1,5 +1,4 @@
 import express from "express";
-import passport from "passport";
 import { kakaoLogin, login, register } from "../controllers/authController";
 
 /**

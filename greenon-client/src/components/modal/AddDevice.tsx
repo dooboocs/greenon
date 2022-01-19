@@ -1,9 +1,7 @@
 import React from "react";
-import useStore from "../../stores";
 import { TextInput, Button as BaseButton } from "../common";
 
 const AddDevice = () => {
-  const { modal } = useStore();
   const [error, setError] = React.useState(false);
 
   return (

@@ -1,7 +1,6 @@
 import { observable, toJS } from "mobx";
 import { apis } from "../lib/axios";
 import { app } from "./app";
-import { toast } from "./toast";
 
 export interface IDevice {
   id: string;

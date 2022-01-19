@@ -4,7 +4,6 @@ import cors from "cors";
 import { createConnection } from "typeorm";
 import session from "express-session";
 import flash from "connect-flash";
-import passport from "passport";
 import {
   authRouter,
   userRouter,
@@ -72,8 +71,6 @@ app.use(
 );
 
 app.use(flash());
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use("/uploads", express.static(__dirname + "/../uploads"));
 
