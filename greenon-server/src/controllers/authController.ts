@@ -63,17 +63,19 @@ export const kakaoLogin = async (req, res) => {
     headers: { Authorization: `Bearer ${token.data.access_token}` },
   });
 
+  console.log(user);
+
   const exist = await getRepository(User)
     .createQueryBuilder("user")
-    .where("user.email = :email", { email: user.data.kakao_account.email })
+    .where("user.kakaoId = :kakaoId", { kakaoId: user.data.id })
     .getOne();
 
   if (!exist) {
     const newUser = await getRepository(User).create({
+      kakaoId: user.data.id,
       email: user.data.kakao_account.email,
       name: user.data.kakao_account.profile.nickname,
       strategy: "kakao",
-      phone: "01012341234",
     });
 
     const result = await getRepository(User).save(newUser);
@@ -83,7 +85,6 @@ export const kakaoLogin = async (req, res) => {
     res.redirect("http://52.79.146.233");
   } else {
     const token = await exist.generateToken();
-    console.log(token);
     res.append("Set-Cookie", `token=${token}; Path=/;`);
     res.redirect("http://52.79.146.233");
   }

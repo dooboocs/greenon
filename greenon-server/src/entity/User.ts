@@ -67,6 +67,9 @@ export class User {
   @Column({ default: "local" })
   strategy: string;
 
+  @Column({ nullable: true })
+  kakaoId: string;
+
   @OneToMany(() => Device, (device) => device.user, {
     cascade: true,
   })
