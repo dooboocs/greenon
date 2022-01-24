@@ -34,7 +34,8 @@ const AddDevice = () => {
         WIFI에 제품을 연동한 후<br />
         진행해주셔야 합니다
       </p>
-      <TextInput type="text" label="제품번호" />
+      <label>제품 번호</label>
+      <TextInput type="text" />
       <BaseButton onClick={() => setError(true)}>확인</BaseButton>
     </div>
   );

@@ -59,15 +59,15 @@ const Login = () => {
         <Modal>
           <ModalInner>
             <form style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+              <label>이메일</label>
               <TextInput
                 type="email"
-                label="이메일"
                 onChange={onChangeInput}
                 value={input.email}
               />
+              <label>비밀번호</label>
               <TextInput
                 type="password"
-                label="비밀번호"
                 onChange={onChangeInput}
                 value={input.password}
               />

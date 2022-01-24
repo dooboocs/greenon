@@ -63,8 +63,6 @@ export const kakaoLogin = async (req, res) => {
     headers: { Authorization: `Bearer ${token.data.access_token}` },
   });
 
-  console.log(user);
-
   const exist = await getRepository(User)
     .createQueryBuilder("user")
     .where("user.kakaoId = :kakaoId", { kakaoId: user.data.id })
@@ -88,4 +86,43 @@ export const kakaoLogin = async (req, res) => {
     res.append("Set-Cookie", `token=${token}; Path=/;`);
     res.redirect("http://52.79.146.233");
   }
+};
+
+export const sendSMS = async (req, res) => {
+  let verifyCode = "";
+  for (let i = 0; i < 6; i++) {
+    verifyCode += parseInt((Math.random() * 10).toString()).toString();
+  }
+  if (!req.body.phone) {
+    return res.sendStatus(400);
+  }
+  req.session[req.body.phone] = verifyCode;
+  try {
+    await axios({
+      method: "POST",
+      url: "https://apis.aligo.in/send/",
+      data: qs.stringify({
+        key: "6labktb7v9ot2j21es0jetvp8ihzxsmm",
+        user_id: "greenon1",
+        sender: "01099832558",
+        receiver: req.body.phone,
+        msg: `[그린온] 인증번호 [${verifyCode}]를 입력해 주세요.`,
+        msg_type: "SMS",
+      }),
+    });
+    res.sendStatus(200);
+  } catch (err) {
+    res.send(400).json({ error: "SMS Server Error" });
+  }
+};
+
+export const authSMS = async (req, res) => {
+  if (!req.body.phone) {
+    return res.sendStatus(400);
+  }
+  let verifyCode = req.session[req.body.phone];
+  if (req.body.verifyCode !== verifyCode) {
+    return res.sendStatus(401);
+  }
+  res.sendStatus(200);
 };

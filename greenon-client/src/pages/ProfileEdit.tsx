@@ -1,5 +1,5 @@
-import { useObserver } from "mobx-react";
 import React from "react";
+import { useObserver } from "mobx-react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ContentHeader } from "../components/base";
@@ -38,25 +38,38 @@ const ProfileEdit = () => {
       <ContentHeader title="회원 정보 수정" />
       <Box>
         <ProfileImage />
+        <label>이메일</label>
         <TextInput
           type="email"
-          label="이메일"
-          background="#f4f4f4"
+          style={{ background: "#f4f4f4" }}
           value={user.email}
         />
+        <label>이름</label>
         <TextInput
           type="text"
-          label="이름"
-          background="#f4f4f4"
+          style={{ background: "#f4f4f4" }}
           value={user.name}
         />
-        <TextInput
-          type="text"
-          label="연락처"
-          background="#e5f2f8"
-          value={user.phone}
-          right={<span style={{ fontSize: 14, color: "#007cba" }}>수정</span>}
-        />
+        <label>연락처</label>
+        <div style={{ width: "100%", position: "relative" }}>
+          <TextInput
+            type="text"
+            style={{ background: "#e5f2f8" }}
+            value={user.phone}
+          />
+          <input
+            type="button"
+            value="수정"
+            style={{
+              fontSize: 14,
+              color: "#007cba",
+              position: "absolute",
+              top: 3,
+              right: 3,
+              bottom: 3,
+            }}
+          />
+        </div>
         <Button
           style={{ background: "#e5f2f8", color: "#007cba" }}
           onClick={() => navigate("/change_password")}

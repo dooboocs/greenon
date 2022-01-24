@@ -1,22 +1,47 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import { AuthPageTemplate, AuthDynamicModal } from "../../components/auth";
 import { TextInput, SubmitButton, TelInput } from "../../components/common";
 import { apis } from "../../lib/axios";
 
+const RegisterForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+
+  label {
+    font-size: 14px;
+    margin-bottom: -10px;
+  }
+
+  small {
+    font-size: 12px;
+  }
+
+  figure {
+    font-size: 14px;
+    color: red;
+    margin: 0;
+  }
+`;
+
 const Register2 = () => {
   const [inputs, setInputs] = useState<any>({
+    phone: "",
     email: "",
     password: "",
     password2: "",
   });
+  const [phoneCert, setPhoneCert] = useState<boolean>(false);
   const [errors, setErrors] = useState<any>({
     email: null,
     password: null,
   });
   let navigate = useNavigate();
 
-  const onChangeInput = (e: any) => {
+  const onChange = (e: any) => {
     const { name, value } = e.target;
     setInputs((prev) => ({ ...prev, [name]: value }));
   };
@@ -47,31 +72,23 @@ const Register2 = () => {
     <AuthPageTemplate>
       <AuthDynamicModal headerTitle="회원가입">
         <TelInput />
-        <form style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+        <RegisterForm>
+          <label>이메일</label>
           <TextInput
             name="email"
             type="email"
-            label="이메일"
-            onChange={onChangeInput}
-            error={errors.email}
+            value={inputs.email}
+            onChange={onChange}
           />
+          <label>새 비밀번호 입력</label>
           <TextInput
             name="password"
             type="password"
-            label="새 비밀번호 입력"
-            onChange={onChangeInput}
+            value={inputs.password}
+            onChange={onChange}
           />
-          <TextInput
-            name="password2"
-            type="password"
-            label="새 비밀번호 확인"
-            onChange={onChangeInput}
-            error={
-              inputs.password !== inputs.password2
-                ? "비밀번호가 일치하지 않습니다."
-                : null
-            }
-          />
+          <label>새 비밀번호 확인</label>
+          <TextInput name="password2" type="password" onChange={onChange} />
           <SubmitButton
             disabled={
               !(
@@ -83,7 +100,7 @@ const Register2 = () => {
           >
             다음
           </SubmitButton>
-        </form>
+        </RegisterForm>
       </AuthDynamicModal>
     </AuthPageTemplate>
   );

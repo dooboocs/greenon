@@ -67,25 +67,14 @@ const Request = () => {
     <>
       <ContentHeader title="문의하기" />
       <Box>
-        <TextInput
-          name="username"
-          type="text"
-          label="성함"
-          onChange={onChange}
-        />
-        <TextInput
-          name="phone"
-          type="text"
-          label="연락처"
-          onChange={onChange}
-        />
-        <TextInput
-          name="email"
-          type="email"
-          label="메일주소"
-          onChange={onChange}
-        />
-        <TextInput name="title" type="text" label="제목" onChange={onChange} />
+        <label>성함</label>
+        <TextInput name="username" type="text" onChange={onChange} />
+        <label>연락처</label>
+        <TextInput name="phone" type="text" onChange={onChange} />
+        <label>메일주소</label>
+        <TextInput name="email" type="email" onChange={onChange} />
+        <label>제목</label>
+        <TextInput name="title" type="text" onChange={onChange} />
         <TextArea name="content" label="문의 내용" onChange={onChange} />
         <PhotoInput label="문의 내용" name="image" onChange={uploadImage} />
         <CheckInput title="개인정보 수집이용 동의" id="check1" />

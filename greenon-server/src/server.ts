@@ -60,12 +60,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(
   session({
+    secret: "keyboard cat",
     resave: false,
-    saveUninitialized: false,
-    secret: "KeyForCookie",
+    saveUninitialized: true,
+    rolling: true,
     cookie: {
       httpOnly: true,
       secure: false,
+      maxAge: 180000,
     },
   })
 );

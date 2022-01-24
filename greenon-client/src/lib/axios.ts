@@ -15,6 +15,15 @@ export const apis = {
       email,
       password,
     }),
+  sendSMS: async (phone: string) =>
+    instance.post("/auth/sendSMS", {
+      phone,
+    }),
+  authSMS: async (phone, verifyCode) =>
+    instance.post("/auth/authSMS", {
+      phone,
+      verifyCode,
+    }),
   getUserInfo: async () =>
     instance.get("/users/detail", {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },

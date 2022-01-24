@@ -22,10 +22,13 @@ const ChangePassword = () => {
     <>
       <ContentHeader title="비밀번호 변경" />
       <Box>
-        <TextInput type="password" label="기존 비밀번호 입력" />
+        <label>기존 비밀번호 입력</label>
+        <TextInput type="password" />
         <Division />
-        <TextInput type="password" label="새 비밀번호 입력" />
-        <TextInput type="password" label="새 비밀번호 확인" />
+        <label>새 비밀번호 입력</label>
+        <TextInput type="password" />
+        <label>기새 비밀번호 확인</label>
+        <TextInput type="password" />
 
         <Button onClick={() => navigate("/")}>확인</Button>
       </Box>

@@ -1,5 +1,11 @@
 import express from "express";
-import { kakaoLogin, login, register } from "../controllers/authController";
+import {
+  authSMS,
+  kakaoLogin,
+  login,
+  register,
+  sendSMS,
+} from "../controllers/authController";
 
 /**
  * @swagger
@@ -79,15 +85,14 @@ const auth = express.Router();
 
 auth.post("/login", login);
 auth.post("/register", register);
-
 auth.get("/kakao", (req, res) => {
   const callback_uri = "http://52.79.146.233:3000/auth/kakao/callback";
-
   res.redirect(
     `https://kauth.kakao.com/oauth/authorize?client_id=a901df17d13f61c89a412946009caaec&redirect_uri=${callback_uri}&response_type=code&prompt=login`
   );
 });
-
 auth.get("/kakao/callback", kakaoLogin);
+auth.post("/sendSMS", sendSMS);
+auth.post("/authSMS", authSMS);
 
 export default auth;
