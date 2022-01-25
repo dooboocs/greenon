@@ -9,12 +9,6 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 10px;
-`;
-
-const FormHeader = styled.div`
-  display: flex;
-  align-items: flex-end;
-  gap: 10px;
 
   label {
     font-size: 14px;
@@ -24,6 +18,17 @@ const FormHeader = styled.div`
     font-size: 12px;
     color: #8b8b8b;
   }
+
+  figure {
+    font-size: 14px;
+    margin: 0;
+  }
+`;
+
+const FormHeader = styled.div`
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
 `;
 
 const InputWrapper = styled.div`
@@ -39,37 +44,38 @@ const RightButton = styled(Button)`
 `;
 
 const TelInput = () => {
-  const [phone, setPhone] = React.useState("");
-  const [verifyCode, setVerifyCode] = React.useState("");
+  const [inputs, setInputs] = React.useState({
+    phone: "",
+    verifyCode: "",
+  });
   const [timer, setTimer] = React.useState<string>("stop");
-  const [success, setSuccess] = React.useState(false);
+  const [verified, setVerified] = React.useState<boolean>(false);
 
-  const onClick = async (e: any) => {
+  const onChange = (e: any) => {
+    const { name, value } = e.target;
+    setInputs((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const sendCode = async (e: any) => {
     e.preventDefault();
-    if (phone) {
-      let regPhone = /(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/g;
-      if (!regPhone.test(phone)) {
-        alert("올바르지 않은 휴대폰 번호입니다");
-        setPhone("");
-      }
-      // await apis.sendSMS(phone).then((res) => {
-      //   if (res.status === 200) {
-      //     setTimer(true);
-      //   }
-      // });
-      setTimer("start");
+    if (inputs.phone) {
+      await apis.sendSMS(inputs.phone).then((res) => {
+        if (res.status === 200) {
+          setTimer("start");
+        }
+      });
     }
   };
 
-  const onAuth = async (e: any) => {
+  const verify = async (e: any) => {
     e.preventDefault();
 
-    if (verifyCode) {
-      await apis.authSMS(phone, verifyCode).then((res) => {
+    if (inputs.verifyCode) {
+      await apis.authSMS(inputs.phone, inputs.verifyCode).then((res) => {
         if (res.status === 200) {
-          setSuccess(true);
+          setVerified(true);
         } else if (res.status === 401) {
-          setSuccess(false);
+          setVerified(false);
         }
       });
     }
@@ -84,21 +90,21 @@ const TelInput = () => {
       <InputWrapper>
         <Input
           type="tel"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
+          value={inputs.phone}
+          onChange={onChange}
           style={{ flex: 2 }}
           maxLength={13}
         />
-        <RightButton onClick={onClick}>인증번호 전송</RightButton>
+        <RightButton onClick={sendCode}>인증번호 전송</RightButton>
       </InputWrapper>
       <InputWrapper>
         <Input
           type="text"
-          value={verifyCode}
-          onChange={(e) => setVerifyCode(e.target.value)}
+          value={inputs.verifyCode}
+          onChange={onChange}
           style={{ flex: 2 }}
         />
-        <RightButton onClick={onAuth}>인증</RightButton>
+        <RightButton onClick={verify}>인증</RightButton>
       </InputWrapper>
       {timer === "timeout" ? (
         <small>인증시간이 만료되었습니다</small>
@@ -106,9 +112,9 @@ const TelInput = () => {
         <Countdown
           date={Date.now() + 179000}
           renderer={(props) => (
-            <small>
+            <figure>
               {props.minutes}:{props.seconds}
-            </small>
+            </figure>
           )}
           onComplete={() => setTimer("timeout")}
         />

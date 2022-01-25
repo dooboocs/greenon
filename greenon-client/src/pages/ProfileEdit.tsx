@@ -9,7 +9,6 @@ import useStore from "../stores";
 const Box = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   gap: 20px;
   padding-top: 40px;
@@ -26,6 +25,7 @@ const ProfileImage = styled.div`
   height: 120px;
   border-radius: 50%;
   background: #d1d1d1;
+  margin: 0 auto;
 `;
 
 const ProfileEdit = () => {
@@ -56,6 +56,7 @@ const ProfileEdit = () => {
             type="text"
             style={{ background: "#e5f2f8" }}
             value={user.phone}
+            disabled={false}
           />
           <input
             type="button"
@@ -67,6 +68,8 @@ const ProfileEdit = () => {
               top: 3,
               right: 3,
               bottom: 3,
+              background: "none",
+              border: "none",
             }}
           />
         </div>

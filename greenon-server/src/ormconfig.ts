@@ -1,5 +1,5 @@
 import { ConnectionOptions } from "typeorm";
-import { User, Device, DeviceData, Notice, Request } from "./entity";
+import { User, Device, DeviceData, Notice, Request, PhoneCert } from "./entity";
 
 const ormconfig: ConnectionOptions = {
   type: "mysql",
@@ -10,7 +10,7 @@ const ormconfig: ConnectionOptions = {
   database: "dev",
   synchronize: true,
   logging: false,
-  entities: [User, Device, DeviceData, Notice, Request],
+  entities: [User, Device, DeviceData, Notice, Request, PhoneCert],
 };
 
 export default ormconfig;

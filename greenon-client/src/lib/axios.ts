@@ -10,10 +10,11 @@ export const apis = {
       email,
       password,
     }),
-  register: async (email: string, password: string) =>
+  register: async (email: string, password: string, phone: string) =>
     instance.post("/auth/register", {
       email,
       password,
+      phone,
     }),
   sendSMS: async (phone: string) =>
     instance.post("/auth/sendSMS", {

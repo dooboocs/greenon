@@ -50,6 +50,7 @@ createConnection(connectionOptions)
   })
   .catch((error) => console.log(error));
 
+// Express
 const app = express();
 app.use(cors());
 
@@ -58,10 +59,11 @@ app.set("port", process.env.PORT || 3000);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// session
 app.use(
   session({
     secret: "keyboard cat",
-    resave: false,
+    resave: true,
     saveUninitialized: true,
     rolling: true,
     cookie: {
@@ -75,7 +77,6 @@ app.use(
 app.use(flash());
 
 app.use("/uploads", express.static(__dirname + "/../uploads"));
-
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 app.use("/auth", authRouter);
 app.use("/users", userRouter);

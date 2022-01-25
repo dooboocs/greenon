@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getRepository } from "typeorm";
-import { User } from "../entity";
+import { User, PhoneCert } from "../entity";
 import qs from "qs";
 
 export const login = async (req, res) => {
@@ -89,14 +89,14 @@ export const kakaoLogin = async (req, res) => {
 };
 
 export const sendSMS = async (req, res) => {
+  // Generate Random Code
   let verifyCode = "";
   for (let i = 0; i < 6; i++) {
     verifyCode += parseInt((Math.random() * 10).toString()).toString();
   }
-  if (!req.body.phone) {
-    return res.sendStatus(400);
-  }
-  req.session[req.body.phone] = verifyCode;
+
+  if (!req.body.phone) return res.sendStatus(400);
+
   try {
     await axios({
       method: "POST",
@@ -110,19 +110,44 @@ export const sendSMS = async (req, res) => {
         msg_type: "SMS",
       }),
     });
+
+    const exist = await getRepository(PhoneCert).findOne({
+      phone: req.body.phone,
+    });
+
+    if (exist) {
+      // update
+      await getRepository(PhoneCert).update(exist, { verifyCode });
+    } else {
+      // create
+      const phoneCert = await getRepository(PhoneCert).create({
+        phone: req.body.phone,
+        verifyCode,
+      });
+      await getRepository(PhoneCert).save(phoneCert);
+    }
     res.sendStatus(200);
   } catch (err) {
-    res.send(400).json({ error: "SMS Server Error" });
+    res.sendStatus(400).json({ error: "SMS Server Error" });
   }
 };
 
 export const authSMS = async (req, res) => {
-  if (!req.body.phone) {
-    return res.sendStatus(400);
+  if (!req.body.phone) return res.sendStatus(400);
+
+  // Find PhoneCert by phone
+  const phoneCert = await getRepository(PhoneCert).findOne({
+    phone: req.body.phone,
+  });
+
+  const isVerified = await phoneCert.verify(req.body.verifyCode);
+
+  // Verify Code
+  if (isVerified) {
+    // valid
+    return res.sendStatus(200);
+  } else {
+    // invalid
+    res.sendStatus(401);
   }
-  let verifyCode = req.session[req.body.phone];
-  if (req.body.verifyCode !== verifyCode) {
-    return res.sendStatus(401);
-  }
-  res.sendStatus(200);
 };
