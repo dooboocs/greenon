@@ -50,7 +50,7 @@ const Register2 = () => {
     password2: "",
   });
   const [timer, setTimer] = React.useState<string>("stop");
-  const [verified, setVerified] = React.useState<boolean>(false);
+  const [verified, setVerified] = React.useState<boolean>(null);
   const [errors, setErrors] = useState({
     email: null,
   });
@@ -114,8 +114,10 @@ const Register2 = () => {
       <AuthDynamicModal headerTitle="회원가입">
         <RegisterForm>
           <label>
-            휴대폰 인증
-            <small>회원가입을 위한 전화번호 인증이 필요합니다.</small>
+            휴대폰 인증{" "}
+            <small style={{ marginLeft: 10 }}>
+              회원가입을 위한 전화번호 인증이 필요합니다.
+            </small>
           </label>
           <InputWrapper>
             <Input
@@ -150,7 +152,7 @@ const Register2 = () => {
               )}
               onComplete={() => setTimer("timeout")}
             />
-          ) : !verified ? (
+          ) : verified === false ? (
             <figure>인증번호가 일치하지 않습니다.</figure>
           ) : null}
           <label>이메일</label>
